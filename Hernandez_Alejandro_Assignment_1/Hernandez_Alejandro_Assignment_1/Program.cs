@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Hernandez_Alejandro_Assignment_1
 {
@@ -154,18 +155,45 @@ namespace Hernandez_Alejandro_Assignment_1
     }
     class Program
     {
+        public static Student CreateStudent(string line)
+        {
+
+            Student student = new Student();
+            return student;
+        }
+        public static Course CreateCourse(string line)
+        {
+
+            Course student = new Course();
+            return student;
+        }
         static void Main(string[] args)
         {
 
-            Student s1 = new Student(1, "A", "B","EBOLA", Year.Freshman, 3.2F);
-            Course c1 = new Course("A", 1, "2", 1, 10);
-
-            Globals.studentPool[s1.id] = s1;
-            Globals.coursePool[c1.departmentCode] = c1;
-            s1.Enroll(c1);
-
-            c1.PrintRoster();
+            string inLine;
+            using (StreamReader inFile = new StreamReader("..\\..\\students.txt"))
+            {
+                inLine = inFile.ReadLine(); 
+                while (inLine != null) 
+                {
+                    inLine = inFile.ReadLine();
+                    Student temp = CreateStudent(inLine);
+                    Globals.studentPool[temp.id] = temp;
+                }
+            }
+            using (StreamReader inFile = new StreamReader("..\\..\\courses.txt"))
+            {
+                inLine = inFile.ReadLine();
+                while (inLine != null)
+                {
+                    inLine = inFile.ReadLine();
+                    Course temp = CreateCourse(inLine);
+                    Globals.coursePool[temp.id] = temp;
+                }
+            }
 
         }
+        
+
     }
 }
