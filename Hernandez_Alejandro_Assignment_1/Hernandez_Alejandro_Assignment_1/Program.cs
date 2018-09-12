@@ -131,6 +131,7 @@ namespace Hernandez_Alejandro_Assignment_1
             }
 
             newCourse.idList.Add(id);
+            newCourse.numStudentsEnrolled++;
             return 0;
 
         }
@@ -157,40 +158,40 @@ namespace Hernandez_Alejandro_Assignment_1
     {
         public static Student CreateStudent(string line)
         {
-
-            Student student = new Student();
+            string[] studentArr = line.Split(',');
+            Student student = new Student(Convert.ToUInt32(studentArr[0]), studentArr[2], studentArr[1], studentArr[3], (Year)Convert.ToInt16(studentArr[4]), float.Parse(studentArr[5]));
             return student;
         }
         public static Course CreateCourse(string line)
         {
-
-            Course student = new Course();
-            return student;
+            string[] courseArr = line.Split(',');
+            Course course = new Course(courseArr[0], Convert.ToUInt16(courseArr[1]), courseArr[2], ushort.Parse(courseArr[3]), ushort.Parse(courseArr[4]));
+            return course;
         }
         static void Main(string[] args)
         {
 
             string inLine;
-            using (StreamReader inFile = new StreamReader("..\\..\\students.txt"))
+            using (StreamReader inFile = new StreamReader(@"..\..\..\..\students.txt"))
             {
-                inLine = inFile.ReadLine(); 
-                while (inLine != null) 
+                
+                while ((inLine = inFile.ReadLine()) != null) 
                 {
-                    inLine = inFile.ReadLine();
                     Student temp = CreateStudent(inLine);
                     Globals.studentPool[temp.id] = temp;
                 }
             }
-            using (StreamReader inFile = new StreamReader("..\\..\\courses.txt"))
+            using (StreamReader inFile = new StreamReader(@"..\..\..\..\courses.txt"))
             {
-                inLine = inFile.ReadLine();
-                while (inLine != null)
+                while ((inLine = inFile.ReadLine()) != null)
                 {
-                    inLine = inFile.ReadLine();
                     Course temp = CreateCourse(inLine);
-                    Globals.coursePool[temp.id] = temp;
+                    Globals.coursePool[temp.departmentCode+temp.courseNumber.ToString()+temp.sectionNumber] = temp;
                 }
             }
+
+            Globals.studentPool[1402258].Enroll(Globals.coursePool["CSCI340C004"]);
+            Globals.coursePool["CSCI340C004"].PrintRoster();
 
         }
         
