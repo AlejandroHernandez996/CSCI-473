@@ -9,19 +9,90 @@ namespace Hernandez_Alejandro_Assignment_1
         public static List<Student> studentPool = new List<Student>();
         public static List<Course> coursePool = new List<Course>();
 
-
     }
 
     public enum Year { Freshman,Sophmore,Junior,Senior,PostBacc}
     public class Course
     {
 
-        public string departmentCode;
-        public uint courseNumber;
-        public string sectionNumber;
-        public ushort creditHours;
+        private string DepartmentCode;
+        public string departmentCode
+        {
+            get
+            {
+                return DepartmentCode;
+            }
+            set
+            {
+                if (value.Length <= 4)
+                {
+                    DepartmentCode = value.ToUpper();
+                }
+            }
+        }
+        private uint CourseNumber;
+        public uint courseNumber
+        {
+            get
+            {
+                return CourseNumber;
+            }
+            set
+            {
+                if (value >= 100 && value <= 499)
+                {
+                    CourseNumber = value;
+                }
+            }
+        }
+        private string SectionNumber;
+        public string sectionNumber
+        {
+            get
+            {
+                return SectionNumber;
+            }
+            set
+            {
+                if (value.Length == 4)
+                {
+                    SectionNumber = value;
+                }
+            }
+        }
+        private ushort CreditHours;
+        public ushort creditHours
+        {
+            get
+            {
+                return CreditHours;
+            }
+            set
+            {
+                if (value >= 0 && value <= 6)
+                {
+                    CreditHours = value;
+                }
+            }
+        }
+
         public List<uint> idList;
-        public ushort numStudentsEnrolled;
+
+        private ushort NumStudentsEnrolled;
+        public ushort numStudentsEnrolled
+        {
+            get
+            {
+                return NumStudentsEnrolled;
+            }
+            set
+            {
+                if (value >= 0)
+                {
+                    NumStudentsEnrolled = value;
+                }
+            }
+        }
         public ushort maxNumStudents;
 
         public Course() { }
@@ -82,7 +153,24 @@ namespace Hernandez_Alejandro_Assignment_1
         public string lastName;
         public string major;
         public Year year;
-        public float gpa;
+
+        private float GPA;
+        public float gpa
+        {
+            get
+            {
+                return GPA;
+            }
+            set
+            {
+                if (value >= 0 && value <= 4.000)
+                {
+                    //Console.WriteLine("Valid GPA entered");
+                    GPA = value;
+                }
+            }
+        }
+
         public ushort creditHours;
 
         public Student() { }
@@ -90,14 +178,16 @@ namespace Hernandez_Alejandro_Assignment_1
         public Student(uint zID, string fName, string lName,string maj, Year academicYear, float grade)
         {
 
-            id = zID;
             major = maj;
             firstName = fName;
             lastName = lName;
             year = academicYear;
             gpa = grade;
             creditHours = 0;
-
+            if (zID > 1000000)
+            {
+                id = zID;
+            }
 
         }
 
