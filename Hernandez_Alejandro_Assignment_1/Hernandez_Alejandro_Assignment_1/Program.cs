@@ -6,8 +6,9 @@ namespace Hernandez_Alejandro_Assignment_1
 {
     public static class Globals
     {
-        public static Dictionary<uint, Student> studentPool = new Dictionary<uint, Student>();
-        public static Dictionary<string, Course> coursePool = new Dictionary<string, Course>();
+        public static List<Student> studentPool = new List<Student>();
+        public static List<Course> coursePool = new List<Course>();
+
 
     }
 
@@ -53,8 +54,13 @@ namespace Hernandez_Alejandro_Assignment_1
 
             foreach(uint i in idList)
             {
-
-                Console.WriteLine(Globals.studentPool[i].ToString());
+                for(int x =0;x < Globals.studentPool.Count; x++)
+                {
+                    if(Globals.studentPool[x].id == i)
+                    {
+                        Console.WriteLine(Globals.studentPool[x].id);
+                    }
+                }
 
             }
 
@@ -178,7 +184,7 @@ namespace Hernandez_Alejandro_Assignment_1
                 while ((inLine = inFile.ReadLine()) != null) 
                 {
                     Student temp = CreateStudent(inLine);
-                    Globals.studentPool[temp.id] = temp;
+                    Globals.studentPool.Add(temp);
                 }
             }
             using (StreamReader inFile = new StreamReader(@"..\..\..\..\courses.txt"))
@@ -186,12 +192,194 @@ namespace Hernandez_Alejandro_Assignment_1
                 while ((inLine = inFile.ReadLine()) != null)
                 {
                     Course temp = CreateCourse(inLine);
-                    Globals.coursePool[temp.departmentCode+temp.courseNumber.ToString()+temp.sectionNumber] = temp;
+                    Globals.coursePool.Add(temp);
                 }
             }
+            Globals.studentPool.Sort((s1, s2) => s1.CompareTo(s2));
+            Globals.coursePool.Sort((c1, c2) => c1.CompareTo(c2));
 
-            Globals.studentPool[1402258].Enroll(Globals.coursePool["CSCI340C004"]);
-            Globals.coursePool["CSCI340C004"].PrintRoster();
+            while (true)
+            {
+
+                Console.WriteLine(String.Format("We have {0} students and {1} classes", Globals.studentPool.Count, Globals.coursePool.Count));
+                Console.WriteLine("Please choose from the following options");
+                Console.WriteLine("1. Print Student List <All>");
+                Console.WriteLine("2. Print Student List <Major>");
+                Console.WriteLine("3. Print Student List <Academic Year>");
+                Console.WriteLine("4. Print Course List");
+                Console.WriteLine("5. Print Course Roster");
+                Console.WriteLine("6. Enroll Student");
+                Console.WriteLine("7. Drop Student");
+                Console.WriteLine("8. Quit");
+
+                char x = Char.ToLower(Console.ReadKey(true).KeyChar);
+                Console.Clear();
+                if(x == '1')
+                {
+
+                    foreach(Student s in Globals.studentPool)
+                    {
+                        Console.WriteLine(s.ToString());
+                    }
+                    
+                }
+                else if (x == '2')
+                {
+                    Console.WriteLine("Type Major and Press Enter");
+                    string line = Console.ReadLine();
+                    foreach (Student s in Globals.studentPool)
+                    {
+                        if(s.major.ToLower().Equals(line.ToLower()))
+                            Console.WriteLine(s.ToString());
+                    }
+
+                }
+                else if (x == '3')
+                {
+                    Console.WriteLine("Type Year and Press Enter ( Freshman, Sophmore, Junior, Senior, PostBacc )");
+                    string line = Console.ReadLine();
+                    int year = -1;
+                    if (line.ToLower().Equals("freshman"))
+                        year = 0;
+                    else if (line.ToLower().Equals("sophmore"))
+                        year = 1;
+                    else if (line.ToLower().Equals("junior"))
+                        year = 2;
+                    else if (line.ToLower().Equals("senior"))
+                        year = 3;
+                    else if (line.ToLower().Equals("postbacc"))
+                        year = 4;
+
+                    foreach (Student s in Globals.studentPool)
+                    {
+                        if (year != -1 && s.year == (Year)year)
+                            Console.WriteLine(s.ToString());
+                    }
+
+                }
+                else if (x == '4')
+                {
+
+                    foreach (Course c in Globals.coursePool)
+                    {
+                        Console.WriteLine(c.ToString());
+                    }
+
+                }
+                else if (x == '5')
+                {
+
+                    Console.WriteLine("Type Department Code, Course Number, Section Number(XXXX XXX XXXX)");
+                    string[] line = Console.ReadLine().Split(' ');
+
+                    Course foundCourse;
+                    if (line.Length == 3) {
+                        foreach (Course c in Globals.coursePool) {
+
+                            if (line[0].Equals(c.departmentCode) && Convert.ToUInt32(line[1]) == c.courseNumber && line[2].Equals(c.sectionNumber))
+                            {
+                                foundCourse = c;
+                                foreach(uint i in c.idList)
+                                {
+                                    foreach (Student s in Globals.studentPool)
+                                    {
+                                        if(i == s.id)
+                                            Console.WriteLine(s.ToString());
+                                    }
+                                }
+                            }
+    
+
+                        }
+                    }
+
+
+                }
+                else if (x == '6')
+                {
+                    Console.WriteLine("Type ZID and Department Code, Course Number, Section Number(ZID XXXX XXX XXXX)");
+                    string[] line = Console.ReadLine().Split(' ');
+
+                    Student tempStudent = null;
+                    Course tempCourse = null;
+                    if (line.Length == 4)
+                    {
+                        foreach (Student foundStudent in Globals.studentPool)
+                        {
+                            if (line[0].Equals(foundStudent.id.ToString()))
+                            {
+                                tempStudent = foundStudent;
+                                break;
+                            }
+                        }
+                        foreach (Course foundCourse in Globals.coursePool)
+                        {
+                            if (line[1].Equals(foundCourse.departmentCode) && Convert.ToUInt32(line[2]) == foundCourse.courseNumber && line[3].Equals(foundCourse.sectionNumber))
+                            {
+                                tempCourse = foundCourse;
+                                break;
+                            }
+                        }
+                    }
+                    if(tempStudent != null && tempCourse != null)
+                    {
+                        tempStudent.Enroll(tempCourse);
+                        Console.WriteLine("Enrolled Succesful!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Could not enroll please try again");
+
+                    }
+
+
+                }
+                else if (x == '7')
+                {
+                    Console.WriteLine("Type ZID and Department Code, Course Number, Section Number(ZID XXXX XXX XXXX)");
+                    string[] line = Console.ReadLine().Split(' ');
+
+                    Student tempStudent = null;
+                    Course tempCourse = null;
+                    if (line.Length == 4)
+                    {
+                        foreach (Student foundStudent in Globals.studentPool)
+                        {
+                            if (line[0].Equals(foundStudent.id.ToString()))
+                            {
+                                tempStudent = foundStudent;
+                                break;
+                            }
+                        }
+                        foreach (Course foundCourse in Globals.coursePool)
+                        {
+                            if (line[1].Equals(foundCourse.departmentCode) && Convert.ToUInt32(line[2]) == foundCourse.courseNumber && line[3].Equals(foundCourse.sectionNumber))
+                            {
+                                tempCourse = foundCourse;
+                                break;
+                            }
+                        }
+                    }
+                    if (tempStudent != null && tempCourse != null)
+                    {
+                        tempStudent.Drop(tempCourse);
+                        Console.WriteLine("Drop Succesful!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Could not drop please try again");
+
+                    }
+
+
+                }else if(x == 'q' || x == 'Q'||  x == '8' || x == 'h')
+                {
+                    break;
+                }
+                Console.WriteLine("Press any key to return to main menu...");
+                Console.ReadKey(true);
+                Console.Clear();
+            }
 
         }
         
