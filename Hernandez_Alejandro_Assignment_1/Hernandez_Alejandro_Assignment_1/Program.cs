@@ -129,7 +129,7 @@ namespace Hernandez_Alejandro_Assignment_1
                 {
                     if(Globals.studentPool[x].id == i)
                     {
-                        Console.WriteLine(Globals.studentPool[x].id);
+                        Console.WriteLine(Globals.studentPool[x].ToRoster());
                     }
                 }
 
@@ -248,6 +248,11 @@ namespace Hernandez_Alejandro_Assignment_1
         {
             return String.Format("{0} -- {1}, {2}, [{3}], ({4}) |{5}|", id, lastName, firstName, year, major, gpa);
         }
+        public string ToRoster()
+        {
+            return String.Format("{0} {1} {2} {3}", id, lastName, firstName, major);
+
+        }
 
     }
     class Program
@@ -362,21 +367,13 @@ namespace Hernandez_Alejandro_Assignment_1
                     Console.WriteLine("Type Department Code, Course Number, Section Number(XXXX XXX XXXX)");
                     string[] line = Console.ReadLine().Split(' ');
 
-                    Course foundCourse;
                     if (line.Length == 3) {
                         foreach (Course c in Globals.coursePool) {
 
                             if (line[0].Equals(c.departmentCode) && Convert.ToUInt32(line[1]) == c.courseNumber && line[2].Equals(c.sectionNumber))
                             {
-                                foundCourse = c;
-                                foreach(uint i in c.idList)
-                                {
-                                    foreach (Student s in Globals.studentPool)
-                                    {
-                                        if(i == s.id)
-                                            Console.WriteLine(s.ToString());
-                                    }
-                                }
+                                c.PrintRoster();
+                                break;
                             }
     
 
@@ -413,8 +410,23 @@ namespace Hernandez_Alejandro_Assignment_1
                     }
                     if(tempStudent != null && tempCourse != null)
                     {
-                        tempStudent.Enroll(tempCourse);
-                        Console.WriteLine("Enrolled Succesful!");
+                        bool isEnrolled = false;
+                        foreach(uint i in tempCourse.idList){
+                            if(i == tempStudent.id)
+                            {
+                                isEnrolled = true;
+                                break;
+                            }
+                        }
+                        if (!isEnrolled)
+                        {
+                            tempStudent.Enroll(tempCourse);
+                            Console.WriteLine("Enrolled Succesful!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Already Enroleld");
+                        }
                     }
                     else
                     {
