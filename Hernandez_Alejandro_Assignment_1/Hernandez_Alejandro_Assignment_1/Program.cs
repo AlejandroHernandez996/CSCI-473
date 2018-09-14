@@ -1,9 +1,18 @@
-﻿using System;
+﻿//
+// Alejandro Hernandez z1835260, Ben Schulz Z1799041
+// Assignment 1
+// Create a program that reads in students and courses
+// Create a menu that displays students and courses
+// And allow to be able to enroll and drop students
+//
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace Hernandez_Alejandro_Assignment_1
 {
+    //Static class that contains students and courses
     public static class Globals
     {
         public static List<Student> studentPool = new List<Student>();
@@ -11,10 +20,14 @@ namespace Hernandez_Alejandro_Assignment_1
 
     }
 
+    //College years enums
     public enum Year { Freshman,Sophmore,Junior,Senior,PostBacc}
+
+    //Course class 
+    //Stores students enrolled in class and other course attributes
     public class Course
     {
-
+        //Variables
         private string DepartmentCode;
         public string departmentCode
         {
@@ -96,6 +109,7 @@ namespace Hernandez_Alejandro_Assignment_1
         public ushort maxNumStudents;
 
         public Course() { }
+        //Initialize course variables
         public Course(string depCode, uint courseNum, string secNum, ushort hours, ushort max)
         {
             departmentCode = depCode;
@@ -105,6 +119,9 @@ namespace Hernandez_Alejandro_Assignment_1
             maxNumStudents = max;
             idList = new List<uint>(maxNumStudents);
         }
+        //Used to compare against another course
+        //First compares the department code then if they are equal
+        //compare the course number
         public int CompareTo(Course course)
         {
             int depCompare = departmentCode.CompareTo(course.departmentCode);
@@ -118,6 +135,7 @@ namespace Hernandez_Alejandro_Assignment_1
                 return depCompare;
             }
         }
+        //Print function to display students enrolled in course
         public void PrintRoster()
         {
             Console.WriteLine("Course: " + ToString());
@@ -146,6 +164,8 @@ namespace Hernandez_Alejandro_Assignment_1
 
 
     }
+    //Student class holds variables of a student
+    //Allows to enroll/drop student into a given course
     public class Student{
 
         public readonly uint id;
@@ -174,7 +194,7 @@ namespace Hernandez_Alejandro_Assignment_1
         public ushort creditHours;
 
         public Student() { }
-
+        //Initialize Student variables
         public Student(uint zID, string fName, string lName,string maj, Year academicYear, float grade)
         {
 
@@ -190,7 +210,7 @@ namespace Hernandez_Alejandro_Assignment_1
             }
 
         }
-
+        //Compares students by ZID
         public int CompareTo(Student student)
         {
             if(id > student.id)
@@ -206,7 +226,8 @@ namespace Hernandez_Alejandro_Assignment_1
                 return 0;
             }
         }
-
+        //Checks if student is able to enroll into course
+        //If return different error codes
         public int Enroll(Course newCourse)
         {
 
@@ -231,7 +252,7 @@ namespace Hernandez_Alejandro_Assignment_1
             return 0;
 
         }
-
+        //Drops student from a course he is in already
         public int Drop(Course newCourse)
         {
             if (newCourse.idList.Remove(id))
@@ -255,14 +276,19 @@ namespace Hernandez_Alejandro_Assignment_1
         }
 
     }
+    //Driver class
+    //Reads student and course files
+    //Displays menu to use the program
     class Program
     {
+        //Returns a student when given an input line from a student file
         public static Student CreateStudent(string line)
         {
             string[] studentArr = line.Split(',');
             Student student = new Student(Convert.ToUInt32(studentArr[0]), studentArr[2], studentArr[1], studentArr[3], (Year)Convert.ToInt16(studentArr[4]), float.Parse(studentArr[5]));
             return student;
         }
+        //Returns a course when given an input line from a course file
         public static Course CreateCourse(string line)
         {
             string[] courseArr = line.Split(',');
@@ -272,6 +298,7 @@ namespace Hernandez_Alejandro_Assignment_1
         static void Main(string[] args)
         {
 
+            //Loops through file and creates a new student for every line given then adds it to the studentPool
             string inLine;
             using (StreamReader inFile = new StreamReader(@"..\..\..\..\students.txt"))
             {
@@ -282,6 +309,7 @@ namespace Hernandez_Alejandro_Assignment_1
                     Globals.studentPool.Add(temp);
                 }
             }
+            //Loops through course file and creates a new course for every line then adds it to the coursePool
             using (StreamReader inFile = new StreamReader(@"..\..\..\..\courses.txt"))
             {
                 while ((inLine = inFile.ReadLine()) != null)
@@ -290,9 +318,11 @@ namespace Hernandez_Alejandro_Assignment_1
                     Globals.coursePool.Add(temp);
                 }
             }
+            //Sort both pools
             Globals.studentPool.Sort((s1, s2) => s1.CompareTo(s2));
             Globals.coursePool.Sort((c1, c2) => c1.CompareTo(c2));
 
+            //MENU
             while (true)
             {
 
@@ -309,6 +339,7 @@ namespace Hernandez_Alejandro_Assignment_1
 
                 char x = Char.ToLower(Console.ReadKey(true).KeyChar);
                 Console.Clear();
+                //Prints all students in studetnPool
                 if(x == '1')
                 {
 
@@ -318,6 +349,7 @@ namespace Hernandez_Alejandro_Assignment_1
                     }
                     
                 }
+                //Prints students in given major
                 else if (x == '2')
                 {
                     Console.WriteLine("Type Major and Press Enter");
@@ -329,6 +361,7 @@ namespace Hernandez_Alejandro_Assignment_1
                     }
 
                 }
+                //Prints students with given year enum
                 else if (x == '3')
                 {
                     Console.WriteLine("Type Year and Press Enter ( Freshman, Sophmore, Junior, Senior, PostBacc )");
@@ -352,6 +385,7 @@ namespace Hernandez_Alejandro_Assignment_1
                     }
 
                 }
+                //Print all courses in coursePool
                 else if (x == '4')
                 {
 
@@ -361,6 +395,7 @@ namespace Hernandez_Alejandro_Assignment_1
                     }
 
                 }
+                //Print students in a given course
                 else if (x == '5')
                 {
 
@@ -382,6 +417,7 @@ namespace Hernandez_Alejandro_Assignment_1
 
 
                 }
+                //Enroll student
                 else if (x == '6')
                 {
                     Console.WriteLine("Type ZID and Department Code, Course Number, Section Number(ZID XXXX XXX XXXX)");
@@ -389,6 +425,8 @@ namespace Hernandez_Alejandro_Assignment_1
 
                     Student tempStudent = null;
                     Course tempCourse = null;
+                    //Find student with given ZID
+                    //Find course with depCode, course number, and section number
                     if (line.Length == 4)
                     {
                         foreach (Student foundStudent in Globals.studentPool)
@@ -408,6 +446,8 @@ namespace Hernandez_Alejandro_Assignment_1
                             }
                         }
                     }
+                    //If they have been set then enroll
+                    //Only if student has been not enrolled before
                     if(tempStudent != null && tempCourse != null)
                     {
                         bool isEnrolled = false;
@@ -436,6 +476,7 @@ namespace Hernandez_Alejandro_Assignment_1
 
 
                 }
+                //Same as above but instead calls drop instead of enroll
                 else if (x == '7')
                 {
                     Console.WriteLine("Type ZID and Department Code, Course Number, Section Number(ZID XXXX XXX XXXX)");
@@ -473,7 +514,7 @@ namespace Hernandez_Alejandro_Assignment_1
 
                     }
 
-
+                //Exit from menu
                 }else if(x == 'q' || x == 'Q'||  x == '8' || x == 'h')
                 {
                     break;
