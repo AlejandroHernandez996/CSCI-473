@@ -664,23 +664,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\aleja\\.nuget\\packages\\": {},
+    "C:\\Users\\BenBeastly\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aleja\\source\\repos\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1.csproj",
+      "projectUniqueName": "E:\\Development\\Visual Studio\\.Net_programming\\Assign_1\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1.csproj",
       "projectName": "Hernandez_Alejandro_Assignment_1",
-      "projectPath": "C:\\Users\\aleja\\source\\repos\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1.csproj",
-      "packagesPath": "C:\\Users\\aleja\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aleja\\source\\repos\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1\\obj\\",
+      "projectPath": "E:\\Development\\Visual Studio\\.Net_programming\\Assign_1\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1.csproj",
+      "packagesPath": "C:\\Users\\BenBeastly\\.nuget\\packages\\",
+      "outputPath": "E:\\Development\\Visual Studio\\.Net_programming\\Assign_1\\Hernandez_Alejandro_Assignment_1\\Hernandez_Alejandro_Assignment_1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\aleja\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\BenBeastly\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

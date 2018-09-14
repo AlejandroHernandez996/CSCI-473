@@ -168,11 +168,67 @@ namespace Hernandez_Alejandro_Assignment_1
     //Allows to enroll/drop student into a given course
     public class Student{
 
-        public readonly uint id;
-        public string firstName;
-        public string lastName;
-        public string major;
-        public Year year;
+        public uint id
+        {
+            get
+            {
+                return Id;
+            }
+        }
+        private readonly uint Id;
+
+        public string firstName
+        {
+            get
+            {
+                return FirstName;
+            }
+            set
+            {
+                FirstName = value;
+            }
+        }
+        private string FirstName;
+
+        public string lastName
+        {
+            get
+            {
+                return LastName;
+            }
+            set
+            {
+                LastName = value;
+
+            }
+        }
+        private string LastName;
+
+        public string major
+        {
+            get
+            {
+                return Major;
+            }
+            set
+            {
+                Major = value;
+            }
+        }
+        private string Major;
+
+        public Year year
+        {
+            get
+            {
+                return Year;
+            }
+            set
+            {
+                Year = value;
+            }
+        }
+        private Year Year;
 
         private float GPA;
         public float gpa
@@ -191,7 +247,21 @@ namespace Hernandez_Alejandro_Assignment_1
             }
         }
 
-        public ushort creditHours;
+        public ushort creditHours
+        {
+            get
+            {
+                return CreditHours;
+            }
+            set
+            {
+                if(value >= 0 && value <= 18)
+                {
+                    CreditHours = value;
+                }
+            }
+        }
+        private ushort CreditHours;
 
         public Student() { }
         //Initialize Student variables
@@ -206,7 +276,7 @@ namespace Hernandez_Alejandro_Assignment_1
             creditHours = 0;
             if (zID > 1000000)
             {
-                id = zID;
+                Id = zID;
             }
 
         }
