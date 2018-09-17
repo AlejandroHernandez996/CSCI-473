@@ -100,6 +100,7 @@
             this.button_apply_search_criteria.TabIndex = 3;
             this.button_apply_search_criteria.Text = "Apply Search Criteria";
             this.button_apply_search_criteria.UseVisualStyleBackColor = true;
+            this.button_apply_search_criteria.Click += new System.EventHandler(this.button_apply_search_criteria_Click);
             // 
             // button_add_student
             // 

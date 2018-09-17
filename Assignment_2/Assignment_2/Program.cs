@@ -253,6 +253,7 @@ namespace Assignment_2
             }
         }
 
+        private ushort CreditHours;
         public ushort creditHours
         {
             get
@@ -267,7 +268,8 @@ namespace Assignment_2
                 }
             }
         }
-        private ushort CreditHours;
+
+        public List<Course> currentlyEnrolled = new List<Course>();
 
         public Student() { }
         //Initialize Student variables
@@ -323,6 +325,8 @@ namespace Assignment_2
                 return 15;
             }
 
+            currentlyEnrolled.Add(newCourse);
+            creditHours += newCourse.creditHours;
             newCourse.idList.Add(id);
             newCourse.numStudentsEnrolled++;
             return 0;
@@ -333,6 +337,9 @@ namespace Assignment_2
         {
             if (newCourse.idList.Remove(id))
             {
+                currentlyEnrolled.Remove(newCourse);
+                creditHours -= newCourse.creditHours;
+                newCourse.numStudentsEnrolled--;
                 return 0;
             }
             else
