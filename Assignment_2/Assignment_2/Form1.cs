@@ -156,7 +156,55 @@ namespace Assignment_2
 
             if (textBox_filter_courses.Text != null)
             {
+                List<Course> foundCourse = new List<Course>();
+                foreach (Course c in Globals.coursePool)
+                {
+                    if (c.ToString().Contains(textBox_filter_courses.Text))
+                    {
+                        foundCourse.Add(c);
+                    }
+                }
+                if (foundCourse.Count > 0)
+                {
+                    listBox_courses.Items.Clear();
+                    richTextBox_messages.Text = "";
+                    foreach (Course c in foundCourse)
+                    {
+                        listBox_courses.Items.Add(c);
+                    }
+                }
+                else if (listBox_courses.Items.Count != Globals.coursePool.Count)
+                {
+                    listBox_courses.Items.Clear();
+                    foreach (Course c in Globals.coursePool)
+                    {
+                        listBox_students.Items.Add(c);
+                    }
+                }
+                else
+                {
+                    richTextBox_messages.Text = "Could not find " + textBox_filter_courses.Text + " in database.";
+                }
+            }
+        }
 
+        private void search_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyData == Keys.Enter)
+            {
+                button_apply_search_criteria_Click(sender, e);
+            }
+            
+        }
+
+        private void button_add_student_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(textBox_name.Text) &&
+                !string.IsNullOrWhiteSpace(textBox_zid.Text) && 
+                !string.IsNullOrWhiteSpace(comboBox_major.Text) &&
+                !string.IsNullOrWhiteSpace(comboBox_year.Text))
+            {
+                richTextBox_messages.Text = "Entered things in all fields";
             }
         }
     }

@@ -111,6 +111,7 @@
             this.button_add_student.TabIndex = 4;
             this.button_add_student.Text = "Add Student";
             this.button_add_student.UseVisualStyleBackColor = true;
+            this.button_add_student.Click += new System.EventHandler(this.button_add_student_Click);
             // 
             // button_add_course
             // 
@@ -150,6 +151,7 @@
             this.textBox_search_student.Name = "textBox_search_student";
             this.textBox_search_student.Size = new System.Drawing.Size(160, 20);
             this.textBox_search_student.TabIndex = 9;
+            this.textBox_search_student.KeyDown += new System.Windows.Forms.KeyEventHandler(this.search_KeyDown);
             // 
             // textBox_filter_courses
             // 
@@ -157,6 +159,7 @@
             this.textBox_filter_courses.Name = "textBox_filter_courses";
             this.textBox_filter_courses.Size = new System.Drawing.Size(160, 20);
             this.textBox_filter_courses.TabIndex = 10;
+            this.textBox_filter_courses.KeyDown += new System.Windows.Forms.KeyEventHandler(this.search_KeyDown);
             // 
             // textBox_department_code
             // 
