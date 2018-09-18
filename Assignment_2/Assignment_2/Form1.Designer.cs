@@ -329,6 +329,8 @@
             this.listBox_students.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBox_students.Size = new System.Drawing.Size(293, 446);
             this.listBox_students.TabIndex = 29;
+            this.listBox_students.Click += new System.EventHandler(this.listBox_students_Click);
+            this.listBox_students.SelectedIndexChanged += new System.EventHandler(this.listBox_students_SelectedIndexChanged);
             // 
             // listBox_courses
             // 

@@ -121,12 +121,12 @@ namespace Assignment_2
 
         private void button_apply_search_criteria_Click(object sender, EventArgs e)
         {
-            if (textBox_search_student.Text != "")
+            if (!string.IsNullOrWhiteSpace(textBox_search_student.Text))
             {
                 List<Student> foundStudent = new List<Student>();
                 foreach (Student s in Globals.studentPool)
                 {
-                    if (s.id.ToString().Contains(textBox_search_student.Text))
+                    if (s.id.ToString().StartsWith(textBox_search_student.Text))
                     {
                         foundStudent.Add(s);
                     }
@@ -134,7 +134,7 @@ namespace Assignment_2
                 if (foundStudent.Count > 0)
                 {
                     listBox_students.Items.Clear();
-                    richTextBox_messages.Text = "";
+                    richTextBox_messages.Clear();
                     foreach (Student s in foundStudent)
                     {
                         listBox_students.Items.Add(s);
@@ -153,13 +153,22 @@ namespace Assignment_2
                     richTextBox_messages.Text = "Could not find " + textBox_search_student.Text + " in database.";
                 }
             }
+            else
+            {
+                listBox_students.Items.Clear();
+                foreach (Student s in Globals.studentPool)
+                {
+                    listBox_students.Items.Add(s);
+                }
+            }
 
-            if (textBox_filter_courses.Text != null)
+            if (!string.IsNullOrWhiteSpace(textBox_filter_courses.Text))
             {
                 List<Course> foundCourse = new List<Course>();
                 foreach (Course c in Globals.coursePool)
                 {
-                    if (c.ToString().Contains(textBox_filter_courses.Text))
+                    textBox_filter_courses.Text = textBox_filter_courses.Text.ToUpper();
+                    if (c.departmentCode.Equals(textBox_filter_courses.Text))
                     {
                         foundCourse.Add(c);
                     }
@@ -167,7 +176,7 @@ namespace Assignment_2
                 if (foundCourse.Count > 0)
                 {
                     listBox_courses.Items.Clear();
-                    richTextBox_messages.Text = "";
+                    richTextBox_messages.Clear();
                     foreach (Course c in foundCourse)
                     {
                         listBox_courses.Items.Add(c);
@@ -178,12 +187,20 @@ namespace Assignment_2
                     listBox_courses.Items.Clear();
                     foreach (Course c in Globals.coursePool)
                     {
-                        listBox_students.Items.Add(c);
+                        listBox_courses.Items.Add(c);
                     }
                 }
                 else
                 {
                     richTextBox_messages.Text = "Could not find " + textBox_filter_courses.Text + " in database.";
+                }
+            }
+            else
+            {
+                listBox_courses.Items.Clear();
+                foreach(Course c in Globals.coursePool)
+                {
+                    listBox_courses.Items.Add(c);
                 }
             }
         }
@@ -205,6 +222,26 @@ namespace Assignment_2
                 !string.IsNullOrWhiteSpace(comboBox_year.Text))
             {
                 richTextBox_messages.Text = "Entered things in all fields";
+            }
+        }
+
+        private void listBox_students_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox_students_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            richTextBox_messages.Clear();
+            foreach (Student s in listBox_students.SelectedItems)
+            {
+                richTextBox_messages.Text += string.Format("{0}--\t{1}, {2}\t[{3}] ({4}) |{5}|", s.id, s.lastName, s.firstName, s.year, s.major, s.gpa);
+                richTextBox_messages.AppendText("\n-----------------------------------------------------------------------------------------------------------------------------------\n");
+                foreach (Course c in s.currentlyEnrolled)
+                {
+                    richTextBox_messages.Text += string.Format("{0} {1}-{2} ({3}/{4})\n", c.departmentCode, c.courseNumber, c.sectionNumber, c.numStudentsEnrolled, c.maxNumStudents);
+                }
+                richTextBox_messages.AppendText("\n\n");
             }
         }
     }
