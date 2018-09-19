@@ -180,6 +180,14 @@
             // comboBox_major
             // 
             this.comboBox_major.FormattingEnabled = true;
+            this.comboBox_major.Items.AddRange(new object[] {
+            "Computer Science",
+            "Electrical Engineering",
+            "Physics",
+            "Mathmatics",
+            "Chemistry",
+            "Powerlifting",
+            "Googling C# Help"});
             this.comboBox_major.Location = new System.Drawing.Point(14, 252);
             this.comboBox_major.Name = "comboBox_major";
             this.comboBox_major.Size = new System.Drawing.Size(160, 21);

@@ -29,6 +29,12 @@ namespace Assignment_2
                 listBox_courses.Items.Add(c);
             }
 
+            //This bit just simply populates the 'year' combo box with the list of possible years
+            for(int i = 0; i < Enum.GetNames(typeof(Year)).Length; i++)
+            {
+                comboBox_year.Items.Add(Enum.GetNames(typeof(Year))[i]);
+            }
+
         }
 
         private void button_enroll_student_Click(object sender, EventArgs e)
@@ -221,7 +227,105 @@ namespace Assignment_2
                 !string.IsNullOrWhiteSpace(comboBox_major.Text) &&
                 !string.IsNullOrWhiteSpace(comboBox_year.Text))
             {
-                richTextBox_messages.Text = "Entered things in all fields";
+                //Student newStudent;
+                string newStudentFirst = "Default";
+                string newStudentLast = "Doe";
+                string newStudentMajor = "Default";
+                Year newStudentYear = Year.Freshman;
+                uint newStudentId = 000;
+                bool canMakeStudent = true;                
+
+                string tempString;
+                uint tempUint;
+
+                //Get zID ready for new student
+                if (textBox_zid.Text.ToUpper().StartsWith("Z"))
+                {
+                    tempString = textBox_zid.Text.Substring(1);
+                }
+
+                if(textBox_zid.Text.Length == 7 && uint.TryParse(textBox_zid.Text, out tempUint))
+                {
+                    foreach(Student s in Globals.studentPool)
+                    {
+                        if(s.id == tempUint)
+                        {
+                            canMakeStudent = false;
+                            richTextBox_messages.Text = "Failed to add new student - Student ZID already in database";
+                        }
+                    }
+                    newStudentId = tempUint;
+                }
+                else
+                {
+                    richTextBox_messages.Text = "Failed to add new student - Invalid ZID entry";
+                    canMakeStudent = false;
+                }
+
+
+
+                //Get name ready for new student to include proper formatting
+                if (textBox_name.Text.Contains(","))
+                {
+                    string[] nameComponents = textBox_name.Text.Split(',');
+                    if(nameComponents.Count() == 2)
+                    {
+                        newStudentLast = nameComponents[0].First().ToString().ToUpper() + nameComponents[0].Substring(1);
+                        if(nameComponents[1].StartsWith(" ")){
+                            nameComponents[1] = nameComponents[1].Substring(1);
+                        }
+                        newStudentFirst = nameComponents[1].First().ToString().ToUpper() + nameComponents[1].Substring(1);
+                        //richTextBox_messages.Text = string.Format("last - '{0}'\tfirst - '{1}'", newStudentLast, newStudentFirst);
+                    }
+                    else
+                    {
+                        richTextBox_messages.Text = "Failed to add new student - Invalid name entry";
+                        canMakeStudent = false;
+                    }
+                }
+                else
+                {
+                    richTextBox_messages.Text = "Failed to add new student - Invalid name entry";
+                    canMakeStudent = false;
+                }
+               
+                //checking the combo boxes
+                if(comboBox_major.SelectedIndex != -1)
+                {
+                    newStudentMajor = comboBox_major.SelectedText;
+                }
+                else
+                {
+                    canMakeStudent = false;
+                    richTextBox_messages.Text = "Failed to add new student - Invalid Major entry";
+                }
+                if(comboBox_year.SelectedIndex != -1)
+                {
+                    Enum.TryParse<Year>(comboBox_year.SelectedText, out newStudentYear);
+                }
+                else
+                {
+                    canMakeStudent = false;
+                    richTextBox_messages.Text = "Failed to add new student - Invalid Year entry";
+                }
+
+
+                if (canMakeStudent == true)
+                {
+                    Student newStudent = new Student(newStudentId, newStudentFirst, newStudentLast, newStudentMajor, newStudentYear, 0f);
+                    Globals.studentPool.Add(newStudent);
+                    Globals.studentPool.Sort((s1, s2) => s1.CompareTo(s2));
+                    listBox_students.Items.Clear();
+                    foreach(Student s in Globals.studentPool)
+                    {
+                        listBox_students.Items.Add(s);
+                    }
+                }
+
+            }
+            else
+            {
+                richTextBox_messages.Text = "One or more of the required fields to create a student has been left empty";
             }
         }
 
