@@ -121,6 +121,7 @@
             this.button_add_course.TabIndex = 5;
             this.button_add_course.Text = "Add Course";
             this.button_add_course.UseVisualStyleBackColor = true;
+            this.button_add_course.Click += new System.EventHandler(this.button_add_course_Click);
             // 
             // textBox_name
             // 

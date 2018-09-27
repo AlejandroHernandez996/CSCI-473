@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -219,7 +220,74 @@ namespace Assignment_2
             }
             
         }
+        private void button_add_course_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(textBox_course_number.Text) &&
+                !string.IsNullOrWhiteSpace(textBox_department_code.Text) &&
+                !string.IsNullOrWhiteSpace(comboBox_section_number.Text) &&
+                !string.IsNullOrWhiteSpace(numericUpDown_capacity.Text))
+            {
+                Course newCourse;
 
+                //The Department Code must be exactly four alphanumeric characters.
+                //The Course number must be exactly three digits. There's a trick to doing this using regular expressions.
+                //The Section number must be exactly four alphanumeric characters.
+                //The capacity must be > 0.
+                string newDepCode = textBox_department_code.Text;
+                string newCourseNum = textBox_course_number.Text;
+                string newSecNum = comboBox_section_number.Text;
+                ushort newMax = ushort.Parse(numericUpDown_capacity.Text);
+
+                //Check if valid fields
+                if( !Regex.IsMatch(newDepCode, @"^[a-zA-Z0-9]{4}$"))
+                {
+                    richTextBox_messages.Text = "Failed to add new course - Invalid Dep Code";
+                    return;
+                }
+                if (!Regex.IsMatch(newCourseNum, @"^[0-9]{3}$"))
+                {
+                    richTextBox_messages.Text = "Failed to add new course - Invalid Course Number";
+                    return;
+                }
+                if (!Regex.IsMatch(newSecNum, @"^[a-zA-Z0-9]{4}$"))
+                {
+                    richTextBox_messages.Text = "Failed to add new course - Invalid Sec Number";
+                    return;
+                }
+                if (newMax < 1)
+                {
+                    richTextBox_messages.Text = "Failed to add new course - Invalid max capacity";
+                    return;
+                }
+
+                //Create new course
+                newCourse = new Course(newDepCode, uint.Parse(newCourseNum), newSecNum, 4, newMax);
+
+
+                // Check if course is already in there
+                foreach(Course c in Globals.coursePool)
+                {
+
+                    if(newCourse.CompareTo(c) == 0 && newCourse.sectionNumber.Equals(c.sectionNumber))
+                    {
+                        richTextBox_messages.Text = "Failed to add new course - Already Exists";
+                        return;
+                    }
+
+                }
+
+                // Add new course and refresh list
+                Globals.coursePool.Add(newCourse);
+                Globals.coursePool.Sort((c1, c2) => c1.CompareTo(c2));
+                listBox_courses.Items.Clear();
+                foreach (Course c in Globals.coursePool)
+                {
+                    listBox_courses.Items.Add(c);
+                }
+
+
+            }
+        }
         private void button_add_student_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(textBox_name.Text) &&
