@@ -21,3 +21,6 @@
 1513234,Nerely,Wray,Theater,3,3.001
 1772123,Weaselton,Duke,Theater,0,2.198
 1421528,Slater,Bradley,Theater,4,3.114
+1799041,Schulz,Benjamin,Electrical Engineering,2,0
+1688152,Astley,Rick,Chemistry,3,0
+1662201,Barkey,Bob,Powerlifting,3,0

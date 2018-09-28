@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -7,6 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+/*
+ * Created by Benjamin Schulz and Alejandro Hernandez
+ * CSCI 473 - Assignment 2
+ * 
+*/
 
 namespace Assignment_2
 {
@@ -19,17 +27,19 @@ namespace Assignment_2
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //Populate student listbox
             foreach (Student s in Globals.studentPool)
             {
                 listBox_students.Items.Add(s);
             }
 
+            //Populate course listbox
             foreach (Course c in Globals.coursePool)
             {
                 listBox_courses.Items.Add(c);
             }
 
-            //This bit just simply populates the 'year' combo box with the list of possible years
+            //This bit just populates the 'year' combo box with the list of possible years
             for(int i = 0; i < Enum.GetNames(typeof(Year)).Length; i++)
             {
                 comboBox_year.Items.Add(Enum.GetNames(typeof(Year))[i]);
@@ -37,6 +47,7 @@ namespace Assignment_2
 
         }
 
+        // Enrolls one or more student into one or more classes if possible (class is full, too many credit hours taken, etc)
         private void button_enroll_student_Click(object sender, EventArgs e)
         {
             if (listBox_students.SelectedItems.Count > 0 && listBox_courses.SelectedItems.Count > 0)
@@ -75,6 +86,7 @@ namespace Assignment_2
             }
         }
 
+        // Drops the student if possible
         private void button_drop_student_Click(object sender, EventArgs e)
         {
             if (listBox_students.SelectedItems.Count > 0 && listBox_courses.SelectedItems.Count > 0)
@@ -113,6 +125,7 @@ namespace Assignment_2
             }
         }
 
+        // Prints one or more courses current rosters
         private void button_print_course_roster_Click(object sender, EventArgs e)
         {
             richTextBox_messages.Clear();
@@ -125,6 +138,7 @@ namespace Assignment_2
             }
         }
 
+        // Apply search critera entered by user upon button click or enter key(later in code)
         private void button_apply_search_criteria_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(textBox_search_student.Text))
@@ -211,6 +225,7 @@ namespace Assignment_2
             }
         }
 
+        // Applying search criteria with the enter key as another option to the user
         private void search_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.KeyData == Keys.Enter)
@@ -220,6 +235,7 @@ namespace Assignment_2
             
         }
 
+        //ALOT of checks to make sure the input is valid before it ultimately adds a new student to the database
         private void button_add_student_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(textBox_name.Text) &&
@@ -239,12 +255,16 @@ namespace Assignment_2
                 uint tempUint;
 
                 //Get zID ready for new student
-                if (textBox_zid.Text.ToUpper().StartsWith("Z"))
+                if (textBox_zid.Text.Length == 8 && textBox_zid.Text.ToUpper().StartsWith("Z"))
                 {
                     tempString = textBox_zid.Text.Substring(1);
                 }
+                else
+                {
+                    tempString = textBox_zid.Text;
+                }
 
-                if(textBox_zid.Text.Length == 7 && uint.TryParse(textBox_zid.Text, out tempUint))
+                if(tempString.Length == 7 && uint.TryParse(tempString, out tempUint))
                 {
                     foreach(Student s in Globals.studentPool)
                     {
@@ -292,7 +312,7 @@ namespace Assignment_2
                 //checking the combo boxes
                 if(comboBox_major.SelectedIndex != -1)
                 {
-                    newStudentMajor = comboBox_major.SelectedText;
+                    newStudentMajor = comboBox_major.Text;
                 }
                 else
                 {
@@ -301,7 +321,7 @@ namespace Assignment_2
                 }
                 if(comboBox_year.SelectedIndex != -1)
                 {
-                    Enum.TryParse<Year>(comboBox_year.SelectedText, out newStudentYear);
+                    newStudentYear = (Year)comboBox_year.SelectedIndex;
                 }
                 else
                 {
@@ -309,10 +329,11 @@ namespace Assignment_2
                     richTextBox_messages.Text = "Failed to add new student - Invalid Year entry";
                 }
 
-
+                //If everything entered for the new student was valid and didn't set the flag, go ahead and make a new student object and add it to the database
                 if (canMakeStudent == true)
                 {
-                    Student newStudent = new Student(newStudentId, newStudentFirst, newStudentLast, newStudentMajor, newStudentYear, 0f);
+                    Student newStudent = new Student(newStudentId, newStudentFirst, newStudentLast, newStudentMajor, newStudentYear, 0.000f);
+
                     Globals.studentPool.Add(newStudent);
                     Globals.studentPool.Sort((s1, s2) => s1.CompareTo(s2));
                     listBox_students.Items.Clear();
@@ -320,6 +341,8 @@ namespace Assignment_2
                     {
                         listBox_students.Items.Add(s);
                     }
+
+                    richTextBox_messages.Text = "Added new student to the database";
                 }
 
             }
@@ -329,11 +352,83 @@ namespace Assignment_2
             }
         }
 
-        private void listBox_students_Click(object sender, EventArgs e)
+        private void button_add_course_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrWhiteSpace(textBox_course_number.Text) &&
+                !string.IsNullOrWhiteSpace(comboBox_department_code.Text) &&
+                !string.IsNullOrWhiteSpace(textBox_section_number.Text) &&
+                !string.IsNullOrWhiteSpace(numericUpDown_capacity.Text))
+            {
+                Course newCourse;
 
+                //The Department Code must be exactly four alphanumeric characters.
+                //The Course number must be exactly three digits. There's a trick to doing this using regular expressions.
+                //The Section number must be exactly four alphanumeric characters.
+                //The capacity must be > 0.
+                string newDepCode = comboBox_department_code.Text;
+                string newCourseNum = textBox_course_number.Text;
+                string newSecNum = textBox_section_number.Text;
+                ushort newMax = ushort.Parse(numericUpDown_capacity.Text);
+                ushort newCreditHours= ushort.Parse(textBox_credit_hours.Text);
+
+                //Check if valid fields
+                if (!Regex.IsMatch(newDepCode, @"^[a-zA-Z0-9]{1,4}$"))
+                {
+                    richTextBox_messages.Text = "Failed to add new course - Invalid Dep Code";
+                    return;
+                }
+                if (!Regex.IsMatch(newCourseNum, @"^[0-9]{3}$"))
+                {
+                    richTextBox_messages.Text = "Failed to add new course - Invalid Course Number";
+                    return;
+                }
+                if (!Regex.IsMatch(newSecNum, @"^[a-zA-Z0-9]{4}$"))
+                {
+                    richTextBox_messages.Text = "Failed to add new course - Invalid Sec Number";
+                    return;
+                }
+                if (!Regex.IsMatch(textBox_credit_hours.Text, @"^[1-4]{1}")){
+                    richTextBox_messages.Text = "Failed to add new course - Invalid credit hours";
+                    return;
+                }
+                if (newMax < 1)
+                {
+                    richTextBox_messages.Text = "Failed to add new course - Invalid max capacity";
+                    return;
+                }
+
+                //Create new course
+                newCourse = new Course(newDepCode, uint.Parse(newCourseNum), newSecNum, newCreditHours, newMax);
+
+
+                // Check if course is already in there
+                foreach (Course c in Globals.coursePool)
+                {
+
+                    if (newCourse.CompareTo(c) == 0 && newCourse.sectionNumber.Equals(c.sectionNumber))
+                    {
+                        richTextBox_messages.Text = "Failed to add new course - Already Exists";
+                        return;
+                    }
+
+                }
+
+                richTextBox_messages.Text = "Added new course to the database";
+
+                // Add new course and refresh list
+                Globals.coursePool.Add(newCourse);
+                Globals.coursePool.Sort((c1, c2) => c1.CompareTo(c2));
+                listBox_courses.Items.Clear();
+                foreach (Course c in Globals.coursePool)
+                {
+                    listBox_courses.Items.Add(c);
+                }
+
+
+            }
         }
 
+        // This part displays the enrolled classes of a student when the user clicks on them in the listbox. Can display multiple students classes if desired. 
         private void listBox_students_SelectedIndexChanged(object sender, EventArgs e)
         {
             richTextBox_messages.Clear();
@@ -348,5 +443,7 @@ namespace Assignment_2
                 richTextBox_messages.AppendText("\n\n");
             }
         }
+
+
     }
 }

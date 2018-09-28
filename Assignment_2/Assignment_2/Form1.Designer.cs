@@ -39,10 +39,10 @@
             this.textBox_course_number = new System.Windows.Forms.TextBox();
             this.textBox_search_student = new System.Windows.Forms.TextBox();
             this.textBox_filter_courses = new System.Windows.Forms.TextBox();
-            this.textBox_department_code = new System.Windows.Forms.TextBox();
+            this.textBox_section_number = new System.Windows.Forms.TextBox();
             this.comboBox_year = new System.Windows.Forms.ComboBox();
             this.comboBox_major = new System.Windows.Forms.ComboBox();
-            this.comboBox_section_number = new System.Windows.Forms.ComboBox();
+            this.comboBox_department_code = new System.Windows.Forms.ComboBox();
             this.numericUpDown_capacity = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -59,6 +59,8 @@
             this.richTextBox_messages = new System.Windows.Forms.RichTextBox();
             this.listBox_students = new System.Windows.Forms.ListBox();
             this.listBox_courses = new System.Windows.Forms.ListBox();
+            this.textBox_credit_hours = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_capacity)).BeginInit();
             this.SuspendLayout();
             // 
@@ -115,12 +117,13 @@
             // 
             // button_add_course
             // 
-            this.button_add_course.Location = new System.Drawing.Point(188, 431);
+            this.button_add_course.Location = new System.Drawing.Point(188, 435);
             this.button_add_course.Name = "button_add_course";
             this.button_add_course.Size = new System.Drawing.Size(151, 28);
             this.button_add_course.TabIndex = 5;
             this.button_add_course.Text = "Add Course";
             this.button_add_course.UseVisualStyleBackColor = true;
+            this.button_add_course.Click += new System.EventHandler(this.button_add_course_Click);
             // 
             // textBox_name
             // 
@@ -161,12 +164,13 @@
             this.textBox_filter_courses.TabIndex = 10;
             this.textBox_filter_courses.KeyDown += new System.Windows.Forms.KeyEventHandler(this.search_KeyDown);
             // 
-            // textBox_department_code
+            // textBox_section_number
             // 
-            this.textBox_department_code.Location = new System.Drawing.Point(14, 360);
-            this.textBox_department_code.Name = "textBox_department_code";
-            this.textBox_department_code.Size = new System.Drawing.Size(160, 20);
-            this.textBox_department_code.TabIndex = 11;
+            this.textBox_section_number.Location = new System.Drawing.Point(14, 401);
+            this.textBox_section_number.Margin = new System.Windows.Forms.Padding(3, 3, 3, 6);
+            this.textBox_section_number.Name = "textBox_section_number";
+            this.textBox_section_number.Size = new System.Drawing.Size(160, 20);
+            this.textBox_section_number.TabIndex = 11;
             // 
             // comboBox_year
             // 
@@ -193,13 +197,21 @@
             this.comboBox_major.Size = new System.Drawing.Size(160, 21);
             this.comboBox_major.TabIndex = 13;
             // 
-            // comboBox_section_number
+            // comboBox_department_code
             // 
-            this.comboBox_section_number.FormattingEnabled = true;
-            this.comboBox_section_number.Location = new System.Drawing.Point(14, 403);
-            this.comboBox_section_number.Name = "comboBox_section_number";
-            this.comboBox_section_number.Size = new System.Drawing.Size(160, 21);
-            this.comboBox_section_number.TabIndex = 14;
+            this.comboBox_department_code.FormattingEnabled = true;
+            this.comboBox_department_code.Items.AddRange(new object[] {
+            "CSCI",
+            "ELE",
+            "PHYS",
+            "MATH",
+            "ART",
+            "PHIL",
+            "COOL"});
+            this.comboBox_department_code.Location = new System.Drawing.Point(14, 359);
+            this.comboBox_department_code.Name = "comboBox_department_code";
+            this.comboBox_department_code.Size = new System.Drawing.Size(160, 21);
+            this.comboBox_department_code.TabIndex = 14;
             // 
             // numericUpDown_capacity
             // 
@@ -337,7 +349,6 @@
             this.listBox_students.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.listBox_students.Size = new System.Drawing.Size(293, 446);
             this.listBox_students.TabIndex = 29;
-            this.listBox_students.Click += new System.EventHandler(this.listBox_students_Click);
             this.listBox_students.SelectedIndexChanged += new System.EventHandler(this.listBox_students_SelectedIndexChanged);
             // 
             // listBox_courses
@@ -349,11 +360,30 @@
             this.listBox_courses.Size = new System.Drawing.Size(293, 446);
             this.listBox_courses.TabIndex = 30;
             // 
+            // textBox_credit_hours
+            // 
+            this.textBox_credit_hours.Location = new System.Drawing.Point(14, 443);
+            this.textBox_credit_hours.Margin = new System.Windows.Forms.Padding(3, 3, 3, 6);
+            this.textBox_credit_hours.Name = "textBox_credit_hours";
+            this.textBox_credit_hours.Size = new System.Drawing.Size(81, 20);
+            this.textBox_credit_hours.TabIndex = 31;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(12, 427);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(65, 13);
+            this.label13.TabIndex = 32;
+            this.label13.Text = "Credit Hours";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1001, 634);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.textBox_credit_hours);
             this.Controls.Add(this.listBox_courses);
             this.Controls.Add(this.listBox_students);
             this.Controls.Add(this.richTextBox_messages);
@@ -370,10 +400,10 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDown_capacity);
-            this.Controls.Add(this.comboBox_section_number);
+            this.Controls.Add(this.comboBox_department_code);
             this.Controls.Add(this.comboBox_major);
             this.Controls.Add(this.comboBox_year);
-            this.Controls.Add(this.textBox_department_code);
+            this.Controls.Add(this.textBox_section_number);
             this.Controls.Add(this.textBox_filter_courses);
             this.Controls.Add(this.textBox_search_student);
             this.Controls.Add(this.textBox_course_number);
@@ -407,10 +437,10 @@
         private System.Windows.Forms.TextBox textBox_course_number;
         private System.Windows.Forms.TextBox textBox_search_student;
         private System.Windows.Forms.TextBox textBox_filter_courses;
-        private System.Windows.Forms.TextBox textBox_department_code;
+        private System.Windows.Forms.TextBox textBox_section_number;
         private System.Windows.Forms.ComboBox comboBox_year;
         private System.Windows.Forms.ComboBox comboBox_major;
-        private System.Windows.Forms.ComboBox comboBox_section_number;
+        private System.Windows.Forms.ComboBox comboBox_department_code;
         private System.Windows.Forms.NumericUpDown numericUpDown_capacity;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -427,6 +457,8 @@
         private System.Windows.Forms.RichTextBox richTextBox_messages;
         private System.Windows.Forms.ListBox listBox_students;
         private System.Windows.Forms.ListBox listBox_courses;
+        private System.Windows.Forms.TextBox textBox_credit_hours;
+        private System.Windows.Forms.Label label13;
     }
 }
 
