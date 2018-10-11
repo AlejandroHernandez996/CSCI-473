@@ -109,5 +109,57 @@ namespace Assignment_2
         {
 
         }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            richTextBox1.Clear();
+
+            string courseText = textBox4.Text;
+            string[] courseSplit = courseText.Split(' ');
+
+            if (courseSplit.Length == 2)
+            {
+                
+                richTextBox1.AppendText("Grade Report for (" + courseText + ")" + Environment.NewLine);
+                richTextBox1.AppendText("------------------------------------------------------------- " + Environment.NewLine);
+
+                var courses =
+                    from C in Globals.coursePool
+                    where (C.departmentCode.Equals(courseSplit[0]) && C.courseNumber.ToString().Equals(courseSplit[1]))
+                    select C;
+
+                if (!courses.Any())
+                {
+                    richTextBox1.Text = "Course was not found please try again.";
+                    return;
+                }
+
+                foreach (var course in courses)
+                {
+
+                    foreach (KeyValuePair<uint, List<string>> entry in course.grades)
+                    {
+                        richTextBox1.AppendText("z" + entry.Key + "  |  " + entry.Value[1] + "-" + entry.Value[2] + "  |  " + entry.Value[0] + Environment.NewLine);
+
+                    }
+                }
+
+            }
+            else
+            {
+                richTextBox1.Text = "Enter DepCode and CourseNum (XXXX XXX)";
+
+            }
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

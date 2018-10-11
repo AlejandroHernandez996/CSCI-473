@@ -167,12 +167,33 @@
             // 
             // comboBox1
             // 
-            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "A++",
+            "A+",
+            "A-",
+            "A--",
+            "B++",
+            "B+",
+            "B-",
+            "B--",
+            "C++",
+            "C+",
+            "C-",
+            "C--",
+            "D++",
+            "D+",
+            "D-",
+            "D--",
+            "F++",
+            "F+",
+            "F-",
+            "F--"});
             this.comboBox1.Location = new System.Drawing.Point(292, 154);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(56, 24);
             this.comboBox1.TabIndex = 9;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // radioButton1
             // 
@@ -316,6 +337,7 @@
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(177, 22);
             this.textBox4.TabIndex = 23;
+            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // button4
             // 
@@ -326,6 +348,7 @@
             this.button4.TabIndex = 22;
             this.button4.Text = "Show Results";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // label11
             // 
