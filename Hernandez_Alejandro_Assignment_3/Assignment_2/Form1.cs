@@ -55,7 +55,53 @@ namespace Assignment_2
 
         private void button3_Click(object sender, EventArgs e)
         {
+            richTextBox1.Clear();
 
+            string major = comboBox2.Text;
+            string courseText = textBox3.Text;
+            string[] courseSplit = courseText.Split(' ');
+
+            if (courseSplit.Length == 2)
+            {
+
+                richTextBox1.AppendText("Fail Report for majors (" + major + ") in "+ courseText + Environment.NewLine);
+                richTextBox1.AppendText("------------------------------------------------------------- " + Environment.NewLine);
+
+                var courses =
+                    from C in Globals.coursePool
+                    where C.departmentCode.Equals(courseSplit[0]) && C.courseNumber.ToString().Equals(courseSplit[1])
+                    select C;
+
+                if (!courses.Any())
+                {
+                    richTextBox1.Text = "Course was not found please try again.";
+                    return;
+                }
+
+                foreach (var course in courses)
+                {
+
+                    foreach (KeyValuePair<uint, List<string>> entry in course.grades)
+                    {
+                        foreach(Student s in Globals.studentPool)
+                        {
+                            if(s.id == entry.Key && s.major.Equals(major) && 
+                                (entry.Value[0].Equals("F") || entry.Value[0].Equals("F-") || entry.Value[0].Equals("F--")  || entry.Value[0].Equals("F+") || entry.Value[0].Equals("F++")))
+                            {
+                                richTextBox1.AppendText("z" + entry.Key + "  |  " + entry.Value[1] + "-" + entry.Value[2] + "  |  " + entry.Value[0] + Environment.NewLine);
+                                break;
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            else
+            {
+                richTextBox1.Text = "Enter DepCode and CourseNum (XXXX XXX)";
+
+            }
         }
 
         private void label9_Click(object sender, EventArgs e)
@@ -158,6 +204,11 @@ namespace Assignment_2
         }
 
         private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

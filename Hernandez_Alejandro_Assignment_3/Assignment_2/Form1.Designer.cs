@@ -313,11 +313,27 @@
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "Computer Science",
+            "Mathematics",
+            "Statistics",
+            "Theater",
+            "Art",
+            "Anthropology",
+            "Psychology",
+            "Marketing",
+            "Physics",
+            "Finance",
+            "Economics",
+            "Biological Sciences",
+            "Chemistry",
+            "Undecided - Any College"});
             this.comboBox2.Location = new System.Drawing.Point(21, 310);
             this.comboBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(213, 24);
             this.comboBox2.TabIndex = 19;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
             // label10
             // 
