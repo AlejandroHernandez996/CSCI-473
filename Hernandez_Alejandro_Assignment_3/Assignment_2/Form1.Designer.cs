@@ -37,7 +37,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
@@ -57,7 +56,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.button5 = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -67,6 +65,8 @@
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.button6 = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -164,36 +164,7 @@
             this.button2.TabIndex = 8;
             this.button2.Text = "Show Results";
             this.button2.UseVisualStyleBackColor = true;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Items.AddRange(new object[] {
-            "A++",
-            "A+",
-            "A-",
-            "A--",
-            "B++",
-            "B+",
-            "B-",
-            "B--",
-            "C++",
-            "C+",
-            "C-",
-            "C--",
-            "D++",
-            "D+",
-            "D-",
-            "D--",
-            "F++",
-            "F+",
-            "F-",
-            "F--"});
-            this.comboBox1.Location = new System.Drawing.Point(292, 154);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(56, 24);
-            this.comboBox1.TabIndex = 9;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // radioButton1
             // 
@@ -424,15 +395,7 @@
             this.radioButton4.TabStop = true;
             this.radioButton4.Text = "Less Than or Equal To";
             this.radioButton4.UseVisualStyleBackColor = true;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(292, 512);
-            this.comboBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(56, 24);
-            this.comboBox3.TabIndex = 28;
+            this.radioButton4.CheckedChanged += new System.EventHandler(this.radioButton4_CheckedChanged);
             // 
             // button5
             // 
@@ -443,6 +406,7 @@
             this.button5.TabIndex = 27;
             this.button5.Text = "Show Results";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label14
             // 
@@ -505,6 +469,27 @@
             // comboBox4
             // 
             this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "A++",
+            "A+",
+            "A-",
+            "A--",
+            "B++",
+            "B+",
+            "B-",
+            "B--",
+            "C++",
+            "C+",
+            "C-",
+            "C--",
+            "D++",
+            "D+",
+            "D-",
+            "D--",
+            "F++",
+            "F+",
+            "F-",
+            "F--"});
             this.comboBox4.Location = new System.Drawing.Point(296, 640);
             this.comboBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox4.Name = "comboBox4";
@@ -520,6 +505,7 @@
             this.button6.TabIndex = 32;
             this.button6.Text = "Show Results";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // label15
             // 
@@ -532,11 +518,51 @@
             this.label15.TabIndex = 31;
             this.label15.Text = "Pass Report for Courses";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "A++",
+            "A+",
+            "A-",
+            "A--",
+            "B++",
+            "B+",
+            "B-",
+            "B--",
+            "C++",
+            "C+",
+            "C-",
+            "C--",
+            "D++",
+            "D+",
+            "D-",
+            "D--",
+            "F++",
+            "F+",
+            "F-",
+            "F--"});
+            this.comboBox1.Location = new System.Drawing.Point(295, 153);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(55, 24);
+            this.comboBox1.TabIndex = 36;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(291, 519);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(53, 22);
+            this.textBox5.TabIndex = 37;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1601, 738);
+            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.comboBox4);
@@ -544,7 +570,6 @@
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label10);
@@ -560,7 +585,6 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label4);
@@ -595,7 +619,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton radioButton3;
@@ -615,7 +638,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label12;
@@ -625,5 +647,7 @@
         private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox textBox5;
     }
 }
