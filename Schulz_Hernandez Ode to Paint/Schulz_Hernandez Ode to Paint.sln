@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Schulz_Hernandez Ode to Paint", "Schulz_Hernandez Ode to Paint\Schulz_Hernandez Ode to Paint.csproj", "{AF83D60B-9816-49CD-81CC-145C52AABDEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF83D60B-9816-49CD-81CC-145C52AABDEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF83D60B-9816-49CD-81CC-145C52AABDEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF83D60B-9816-49CD-81CC-145C52AABDEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF83D60B-9816-49CD-81CC-145C52AABDEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {15CB6D0F-4741-4BA5-8C92-21A62156CE92}
+	EndGlobalSection
+EndGlobal

@@ -165,7 +165,7 @@ namespace Assignment_2
         {
             richTextBox1.Clear();
 
-            string courseText = textBox4.Text;
+            string courseText = textBox4.Text.ToUpper();
             string[] courseSplit = courseText.Split(' ');
 
             if (courseSplit.Length == 2)
@@ -211,6 +211,64 @@ namespace Assignment_2
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            richTextBox1.Clear();
+
+            string gradeText = comboBox1.Text;
+            string[] gradeSplit = new String[2];
+            string courseText = textBox2.Text.ToUpper();
+            string[] courseSplit = courseText.Split(' ');
+            var checkedButton = groupBox1.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
+
+            if (gradeText.Length > 1)
+            {
+                gradeSplit[0] = gradeText.Substring(0, 1);
+                gradeSplit[1] = gradeText.Substring(1);
+            }
+
+            var courses =
+                from C in Globals.coursePool
+                where (C.departmentCode.Equals(courseSplit[0]) && C.courseNumber.ToString().Equals(courseSplit[1]))
+                select C;
+
+            if (!courses.Any())
+            {
+                richTextBox1.Text = "Course was not found please try again.";
+                return;
+            }
+
+            richTextBox1.Text += "Grade threshold report for (" + courseSplit[0] + ")\n";
+            richTextBox1.Text += "---------------------------------------------------------------------------------------\n";
+
+            foreach (var course in courses)
+            {
+                var filteredStudents =
+                    from C in course.grades
+                    where ((C.Value[0].Substring(0).CompareTo(gradeSplit[0]) == 0 || C.Value[0].Substring(0).CompareTo(gradeSplit[0]) == 1 ) 
+                            && (C.Value[0].Substring(1).CompareTo(gradeSplit[1]) == 0 || C.Value[0].Substring(1).CompareTo(gradeSplit[1]) == -1 ))      // this part doesn't work
+                    select C;
+
+                foreach (var filtered in filteredStudents)
+                {
+                    richTextBox1.Text += string.Format("{0}  |  {1}-{2}  |  {3}\n", filtered.Key, filtered.Value[1], filtered.Value[2], filtered.Value[0]);
+                }
+
+            }
+
+
+            // checks what button is selected. Could be a better way of doing this.
+            if (checkedButton.Text.Contains("Less"))
+            {
+                richTextBox1.Text += "\n*Less than*\n";
+            }
+            else
+            {
+                richTextBox1.Text += "\n*Greater than*\n";
+            }
+            
         }
     }
 }
