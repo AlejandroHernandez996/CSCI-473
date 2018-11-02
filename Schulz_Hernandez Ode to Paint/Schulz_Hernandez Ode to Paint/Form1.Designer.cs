@@ -861,7 +861,7 @@
             this.undoButton.TabIndex = 1;
             this.undoButton.Text = "UNDO";
             this.undoButton.UseVisualStyleBackColor = true;
-            this.undoButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.undoButton_MouseClick);
+            this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
             // 
             // panel5
             // 
@@ -881,7 +881,7 @@
             this.redoButton.TabIndex = 0;
             this.redoButton.Text = "REDO";
             this.redoButton.UseVisualStyleBackColor = true;
-            this.redoButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.redoButton_MouseClick);
+            this.redoButton.Click += new System.EventHandler(this.redoButton_Click);
             // 
             // button2
             // 
@@ -893,7 +893,7 @@
             this.button2.TabIndex = 0;
             this.button2.Text = "Swap";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.swap_Click);
             // 
             // panel6
             // 
@@ -942,10 +942,12 @@
             this.Controls.Add(this.color2_Panel);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.paintPanel);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.colorPanel.ResumeLayout(false);
