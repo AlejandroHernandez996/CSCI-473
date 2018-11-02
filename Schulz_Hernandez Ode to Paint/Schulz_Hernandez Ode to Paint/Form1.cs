@@ -13,49 +13,34 @@ using System.IO;
 
 namespace Schulz_Hernandez_Ode_to_Paint
 {
-    public struct Coordinates{
-        public int x;
-        public int y;
-    }
-    
-
     public partial class Form1 : Form
     {
-        private Graphics g;
+        private Bitmap target;
         private bool isPainting = false;
+        private bool undo = false;
+        private bool redo = false;
         private Color color1 = Color.Black;
         private Color color2 = Color.White;
-        private List<Coordinates> coords = new List<Coordinates>();
-        private Stack<List<Coordinates>> undoableActions = new Stack<List<Coordinates>>();
-        private Stack<List<Coordinates>> redoableActions = new Stack<List<Coordinates>>();
-        private Stack<GraphicsState> undoActions = new Stack<GraphicsState>();
-        private Stack<GraphicsState> redoActions = new Stack<GraphicsState>();
+        private string filePath = string.Empty;
+        private List<PointF> coordinates = new List<PointF>();
+        private Stack<Image> undoStack = new Stack<Image>();
+        private Stack<Image> redoStack = new Stack<Image>();
 
         public Form1()
         {
             InitializeComponent();
-            g = paintPanel.CreateGraphics();
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            toolBox.SelectedIndex = 3;
+            target = new Bitmap(paintPanel.ClientSize.Width, paintPanel.ClientSize.Height);
+            paintPanel.Image = target;
+            toolBox.SelectedIndex = 0;
             color1Box.BackColor = color1;
             sizeTextbox.Text = pencilSize.Value.ToString();
-
         }
-
-        int? initX = null;
-        int? initY = null;
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            GraphicsState currentState = g.Save();
-            undoActions.Push(currentState);
 
         }
 
-        private void colorBox_Enter(object sender, EventArgs e)
-        {
-
-        }
 
         private void colorBox_MouseClick(object sender, MouseEventArgs e)
         {
@@ -66,66 +51,108 @@ namespace Schulz_Hernandez_Ode_to_Paint
                 color1 = colorPicker.BackColor;
                 color1Box.BackColor = color1;
             }
-            else if(e.Button == MouseButtons.Right)
+            else if (e.Button == MouseButtons.Right)
             {
                 color2 = colorPicker.BackColor;
                 color2Box.BackColor = color2;
             }
         }
 
+        //user pressed down on the mouse button
         private void paintPanel_MouseDown(object sender, MouseEventArgs e)
         {
+            isPainting = true;
+            coordinates.Add(e.Location);
 
+            using (Graphics GFX = Graphics.FromImage(paintPanel.Image))
+            {
+                //Draw here
+                paintPanel_MouseMove(sender, e);
+            }
             
 
-            Coordinates temp;
-            temp.x = e.X;
-            temp.y = e.Y;
-            coords.Add(temp);
-            isPainting = true;
+            debug.Text = undoStack.Count.ToString();
+            undoStack.Push(new Bitmap(target));
 
-            if(toolBox.SelectedIndex != 3)
-            {
-                drawing(e);
-            }
         }
-
-        private void PaintPanel_MouseUp(object sender, MouseEventArgs e)
-        {
-            Coordinates temp;
-            temp.x = e.X;
-            temp.y = e.Y;
-            coords.Add(temp);
-
-            //line
-            if (toolBox.SelectedIndex == 3 && coords.Count > 1)
-            {
-                Pen p = new Pen(color1, pencilSize.Value);
-                g.DrawLine(p, coords[1].x, coords[1].y, coords[0].x, coords[0].y);
-            }
-
-            undoableActions.Push(coords);
-            coords.Clear();
-            isPainting = false;
-
-            initX = null;
-            initY = null;
-
-            GraphicsState currentState = g.Save();
-            undoActions.Push(currentState);
-            debug.Text = undoActions.Count.ToString();
-        }
-
+        //user is moving mouse
         private void paintPanel_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isPainting == true && toolBox.SelectedIndex != 3)
+            if (isPainting == true)
             {
-                Coordinates temp;
-                temp.x = e.X;
-                temp.y = e.Y;
-                coords.Add(temp);
+                coordinates.Add(e.Location);
 
-                drawing(e);
+                using (Graphics GFX = Graphics.FromImage(paintPanel.Image))
+                {
+                    GFX.SmoothingMode = SmoothingMode.HighQuality;
+
+                    //pencil
+                    if (toolBox.SelectedIndex == 0)
+                    {
+                        GFX.DrawLines(new Pen(color1, pencilSize.Value), coordinates.ToArray());
+                    }
+                    //brush
+                    if (toolBox.SelectedIndex == 1)
+                    {
+                        SolidBrush brush = new SolidBrush(color1);
+                        GFX.FillEllipse(brush, new Rectangle(e.X - (pencilSize.Value / 2), e.Y - (pencilSize.Value / 2), pencilSize.Value, pencilSize.Value));
+                    }
+                }
+                paintPanel.Invalidate();
+            }
+        }
+
+        //user lifted up off the mouse button
+        private void paintPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (isPainting == true)
+            {
+                coordinates.Add(e.Location);
+
+                using (Graphics GFX = Graphics.FromImage(paintPanel.Image))
+                {
+                    //GFX.SmoothingMode = SmoothingMode.HighQuality;
+
+                    //lines
+                    if (toolBox.SelectedIndex == 3)
+                    {
+                        PointF[] lineSegment = { coordinates.First(), coordinates.Last() };
+                        GFX.DrawLines(new Pen(color1, pencilSize.Value), lineSegment);
+                    }
+                    
+                }
+                paintPanel.Invalidate();
+            }
+            isPainting = false;
+            debug.Text = undoStack.Count.ToString();
+            coordinates.Clear();
+
+        }
+
+        private void paintPanel_Paint(object sender, PaintEventArgs e)
+        {
+            
+            if (isPainting == true)
+            {
+                /*
+                
+                    Pen p = new Pen(color1, pencilSize.Value);
+                    e.Graphics.DrawLines(p, coordinates.ToArray());
+                }
+                //brush
+                if (toolBox.SelectedIndex == 1)
+                {
+                    SolidBrush brush = new SolidBrush(color1);
+                    //e.Graphics.FillEllipse(brush, new Rectangle(e.X - (pencilSize.Value / 2), e.Y - (pencilSize.Value / 2), pencilSize.Value, pencilSize.Value));
+                }
+                //erasor
+                if (toolBox.SelectedIndex == 2)
+                {
+                    SolidBrush brush = new SolidBrush(color2);
+                    //e.Graphics.FillEllipse(brush, e.X - (pencilSize.Value / 2), e.Y - (pencilSize.Value / 2), pencilSize.Value, pencilSize.Value);
+                }
+
+               */
             }
         }
 
@@ -193,72 +220,102 @@ namespace Schulz_Hernandez_Ode_to_Paint
         private void undoButton_MouseClick(object sender, MouseEventArgs e)
         {
 
-            if (undoActions.Count > 0)
-            {
-                //g.Clear(Color.Transparent);
-                g.Restore(undoActions.Peek());
-                redoActions.Push(undoActions.Pop());
-                debug.Text = undoActions.Count.ToString();
-                //redoableActions.Push(undoableActions.Pop());
-            }
-
+                paintPanel.Invalidate();
         }
 
         private void redoButton_MouseClick(object sender, MouseEventArgs e)
         {
-
+/*
             if (redoActions.Count > 0)
             {
-                //g.Clear(Color.Transparent);
-                g.Restore(redoActions.Peek());
                 undoActions.Push(redoActions.Pop());
-                //undoableActions.Push(redoableActions.Pop());
+                undoableActions.Push(redoableActions.Pop());
             }
-
-        }
-
-        private void drawing(MouseEventArgs e)
-        {
-            //pencil
-            if (toolBox.SelectedIndex == 0)
-            {
-                Pen p = new Pen(color1, pencilSize.Value);
-                g.DrawLine(p, new Point(initX ?? e.X, initY ?? e.Y), new Point(e.X, e.Y));
-                initX = e.X;
-                initY = e.Y;
-            }
-            //brush
-            if (toolBox.SelectedIndex == 1)
-            {
-                //Pen p = new Pen(color1, pencilSize.Value);
-                //g.DrawLine(p, new Point(initX ?? e.X, initY ?? e.Y), new Point(e.X, e.Y));
-                
-                SolidBrush brush = new SolidBrush(color1);
-                g.FillEllipse(brush, new Rectangle(e.X - (pencilSize.Value / 2), e.Y - (pencilSize.Value / 2), pencilSize.Value, pencilSize.Value));
-                initX = e.X;
-                initY = e.Y;
-            }
-            //erasor
-            if (toolBox.SelectedIndex == 2)
-            {
-                SolidBrush brush = new SolidBrush(color2);
-                g.FillEllipse(brush, e.X - (pencilSize.Value / 2), e.Y - (pencilSize.Value / 2), pencilSize.Value, pencilSize.Value);
-            }
-
-            initX = e.X;
-            initY = e.Y;
+*/
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            g.Clear(Color.White);
-            undoActions.Clear();
-            redoActions.Clear();
+
         }
 
-        private void paintPanel_Paint(object sender, PaintEventArgs e)
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // maybe set a flag when image is changed and then check for the flag before saving?
+            if (string.IsNullOrEmpty(filePath))
+            {
+                saveAsToolStripMenuItem_Click(sender, e);
+            }
+            else
+            {
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    using(FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite))
+                    {
+                        paintPanel.Image.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                        byte[] bytes = memory.ToArray();
+                        fs.Write(bytes, 0, bytes.Length);
+                    }
+                }
+                
+            }
+        }
 
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "png files (*.png)|*.png";
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                filePath = saveFileDialog1.FileName;
+                //Handle saving the file here
+                if (System.IO.File.Exists(filePath))
+                    System.IO.File.Delete(filePath);
+                paintPanel.Image.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                //NOTE: Will need to fix how the originial graphics is being drawn, as its currently wrong.
+
+            }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog1 = new OpenFileDialog())
+            {
+                openFileDialog1.InitialDirectory = "c:\\desktop";
+                openFileDialog1.Filter = "png files (*.png)|*.png";
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = openFileDialog1.FileName;
+                    // do stuff with path file
+                    target = new Bitmap(filePath);
+                    paintPanel.Image = target;
+                }
+            }
+        }
+
+        private void colorPicker_MouseClick(object sender, MouseEventArgs e)
+        {
+            colorDialog1.AllowFullOpen = false;
+            colorDialog1.Color = color1;
+            colorDialog1.AllowFullOpen = true;
+            
+            if(colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                //Label clicked = (Label)sender;
+
+                    color1 = colorDialog1.Color;
+                    color1Box.BackColor = color1;
+                
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Color temp = color1;
+            color1 = color2;
+            color2 = temp;
+            color1Box.BackColor = color1;
+            color2Box.BackColor = color2;
         }
     }
 }
