@@ -17,6 +17,7 @@ namespace Schulz_Hernandez_Ode_to_Paint
     {
         private Bitmap target;
         private bool isPainting = false;
+        private bool isSaved = true;
         private Color color1 = Color.Black;
         private Color color2 = Color.White;
         private string filePath = string.Empty;
@@ -61,6 +62,7 @@ namespace Schulz_Hernandez_Ode_to_Paint
         private void paintPanel_MouseDown(object sender, MouseEventArgs e)
         {
             isPainting = true;
+            isSaved = false;
             coordinates.Add(e.Location);
             
 
@@ -288,6 +290,7 @@ namespace Schulz_Hernandez_Ode_to_Paint
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
             // maybe set a flag when image is changed and then check for the flag before saving?
             if (string.IsNullOrEmpty(filePath))
             {
@@ -295,26 +298,42 @@ namespace Schulz_Hernandez_Ode_to_Paint
             }
             else
             {
-                
+                //Handle saving file here
+                if (System.IO.File.Exists(filePath))
+                    System.IO.File.Delete(filePath);
+
+                isSaved = true;
             }
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "png files (*.png)|*.png";
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            using (SaveFileDialog saveFileDialog1 = new SaveFileDialog())
             {
-                filePath = saveFileDialog1.FileName;
-                //Handle saving the file here
-                //if (System.IO.File.Exists(filePath))
-                //System.IO.File.Delete(filePath);
-                paintPanel.Image.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                saveFileDialog1.Filter = "png files (*.png)|*.png";
+                saveFileDialog1.InitialDirectory = "c:\\desktop";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = saveFileDialog1.FileName;
+                    if (System.IO.File.Exists(filePath))
+                        System.IO.File.Delete(filePath);
+
+                    isSaved = true;
+                }
             }
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (isSaved == false)
+            {
+                var confirmResult = MessageBox.Show("Do you want to save changes?", "Unsaved", MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    saveAsToolStripMenuItem_Click(sender, e);
+                }
+            }
+
             using (OpenFileDialog openFileDialog1 = new OpenFileDialog())
             {
                 openFileDialog1.InitialDirectory = "c:\\desktop";
@@ -322,16 +341,15 @@ namespace Schulz_Hernandez_Ode_to_Paint
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     filePath = openFileDialog1.FileName;
-                    // do stuff with path file
+                    //Handle openning the file here. clear everything
                     undoStack.Clear();
                     redoStack.Clear();
                     target = new Bitmap(filePath);
                     paintPanel.Image = target;
                     redoStack.Push(target);
+                    isSaved = true;
                 }
             }
         }
-
-
     }
 }
