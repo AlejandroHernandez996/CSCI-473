@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using System.IO;
 
 
+//Created by Benjamin Schulz and Alejandro Hernandez
+
 namespace Schulz_Hernandez_Ode_to_Paint
 {
     public partial class Form1 : Form
@@ -28,20 +30,38 @@ namespace Schulz_Hernandez_Ode_to_Paint
         public Form1()
         {
             InitializeComponent();
-            target = new Bitmap(paintPanel.ClientSize.Width, paintPanel.ClientSize.Height);
+        }
+
+
+        //initial load of the form
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(filePath))
+                target = new Bitmap(filePath);
+            else
+                target = new Bitmap(paintPanel.ClientSize.Width, paintPanel.ClientSize.Height);
+
             paintPanel.Image = target;
             toolBox.SelectedIndex = 0;
             color1Box.BackColor = color1;
             sizeTextbox.Text = pencilSize.Value.ToString();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
             undoStack.Push(new Bitmap(target));
             debug.Text = undoStack.Count.ToString();
+
+            //populate recently opened items
+            string[] lines = System.IO.File.ReadAllLines(@"RecentlyOpened.txt");
+            recentlyOpened.DropDownItems.Clear();
+            foreach (string s in lines)
+            {
+                recentlyOpened.DropDownItems.Add(s);
+            }
+            foreach(ToolStripMenuItem m in recentlyOpened.DropDownItems)
+            {
+                m.Click += new EventHandler(menuClick);
+            }
         }
 
-
+        //User has selected a color
         private void colorBox_MouseClick(object sender, MouseEventArgs e)
         {
             Label colorPicker = (Label)sender;
@@ -64,7 +84,6 @@ namespace Schulz_Hernandez_Ode_to_Paint
             isPainting = true;
             isSaved = false;
             coordinates.Add(e.Location);
-            
 
             using (Graphics GFX = Graphics.FromImage(paintPanel.Image))
             {
@@ -87,12 +106,10 @@ namespace Schulz_Hernandez_Ode_to_Paint
 
                 using (Graphics GFX = Graphics.FromImage(paintPanel.Image))
                 {
-                    //GFX.SmoothingMode = SmoothingMode.HighQuality;
-
                     //pencil
                     if (toolBox.SelectedIndex == 0)
                     {
-                        //antialiansed looks like garbage for the thin lines for some reason, so we set it back to normal for the pencil
+                        //antialiased looks like garbage for the thin lines for some reason, so we set it back to normal for the pencil
                         GFX.SmoothingMode = SmoothingMode.Default;  
                         coordinates.Add(e.Location);
                         GFX.DrawLines(new Pen(color1, pencilSize.Value), coordinates.ToArray());
@@ -158,9 +175,7 @@ namespace Schulz_Hernandez_Ode_to_Paint
 
         private void paintPanel_Paint(object sender, PaintEventArgs e)
         {  
-            if (isPainting == true)
-            {
-            }
+
         }
 
         private void textBox21_TextChanged(object sender, EventArgs e)
@@ -168,6 +183,7 @@ namespace Schulz_Hernandez_Ode_to_Paint
 
         }
 
+        //Sets up the different tools to be used
         private void toolBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if(toolBox.SelectedIndex == 0)
@@ -198,10 +214,9 @@ namespace Schulz_Hernandez_Ode_to_Paint
             }
         }
 
+        //sets pencil/brush size by typing in a number in the text box
         private void sizeTextbox_TextChanged(object sender, EventArgs e)
         {
-
-            //fix temp to only allow numerical values within range
             int temp = Convert.ToInt32(sizeTextbox.Text);
             if (temp >= pencilSize.Minimum && temp <= pencilSize.Maximum)
             {
@@ -219,11 +234,13 @@ namespace Schulz_Hernandez_Ode_to_Paint
             }
         }
 
+        //sets pencil/brush size by sliding a bar. Changes the text of the bar to display its current value
         private void pencilSize_ValueChanged(object sender, EventArgs e)
         {
             sizeTextbox.Text = pencilSize.Value.ToString();
         }
 
+        //undo button. Can also use CTRL + Z. Peeks at top image on undo stack, pastes it to paintPanel then pops it off and into redo
         private void undoButton_Click(object sender, EventArgs e)
         {
             if (undoStack.Count > 1)
@@ -236,6 +253,7 @@ namespace Schulz_Hernandez_Ode_to_Paint
             }
         }
 
+        //redo nutton. Can also use CTRL + X. Peeks at the top image on redo stack, pastes it to paintPanel then pops it off and into undo
         private void redoButton_Click(object sender, EventArgs e)
         {
             if (redoStack.Count > 0)
@@ -247,6 +265,7 @@ namespace Schulz_Hernandez_Ode_to_Paint
             }
         }
 
+        //Just a typical color selector, setting it to 'Color 1'. The user can swap later if they want it to be in the background position instead.
         private void colorPicker_MouseClick(object sender, MouseEventArgs e)
         {
             colorDialog1.AllowFullOpen = false;
@@ -260,6 +279,7 @@ namespace Schulz_Hernandez_Ode_to_Paint
             }
         }
 
+        //This swaps the forground color with the background color and the other way around.
         private void swap_Click(object sender, EventArgs e)
         {
             Color temp = color1;
@@ -269,6 +289,7 @@ namespace Schulz_Hernandez_Ode_to_Paint
             color2Box.BackColor = color2;
         }
 
+        // key shortcut input for undo and redo
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             //undo
@@ -283,15 +304,48 @@ namespace Schulz_Hernandez_Ode_to_Paint
             }
         }
 
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private void menuClick(object sender, EventArgs e)
         {
-
+            if (!isSaved)
+            {
+                var confirmResult = MessageBox.Show("Do you want to save changes?", "Unsaved", MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    saveAsToolStripMenuItem_Click(sender, e);
+                }
+            }
+            ToolStripMenuItem m = (ToolStripMenuItem)sender;
+            filePath = m.Text;
+            //Handle openning the file here. clear everything and set up to draw
+            undoStack.Clear();
+            redoStack.Clear();
+            paintPanel.Image.Dispose();
+            Form1_Load(sender, e);
+            isSaved = true;
         }
 
+        // new paintPanel
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!isSaved)
+            {
+                var confirmResult = MessageBox.Show("Do you want to save changes?", "Unsaved", MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    saveAsToolStripMenuItem_Click(sender, e);
+                }
+            }
+            target = new Bitmap(paintPanel.Width, paintPanel.Height);
+            paintPanel.Image = target;
+            paintPanel.Invalidate();
+            undoStack.Clear();
+            redoStack.Clear();
+        }
+
+        // Saves an image to a file
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            // maybe set a flag when image is changed and then check for the flag before saving?
+            Bitmap saveImg = new Bitmap(paintPanel.Image);
             if (string.IsNullOrEmpty(filePath))
             {
                 saveAsToolStripMenuItem_Click(sender, e);
@@ -299,15 +353,26 @@ namespace Schulz_Hernandez_Ode_to_Paint
             else
             {
                 //Handle saving file here
+                //clear usage of file to be able to overwrite.
                 if (System.IO.File.Exists(filePath))
+                {
+                    paintPanel.Image.Dispose();
+                    target.Dispose();
                     System.IO.File.Delete(filePath);
+                }
 
+                saveImg.Save(filePath);
+                saveImg.Dispose();
+                //reload form
+                Form1_Load(sender, e);
                 isSaved = true;
             }
         }
 
+        //Save as above, but unconditionally lets you set a pathname
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Bitmap saveImg = new Bitmap(paintPanel.Image);
             using (SaveFileDialog saveFileDialog1 = new SaveFileDialog())
             {
                 saveFileDialog1.Filter = "png files (*.png)|*.png";
@@ -315,17 +380,26 @@ namespace Schulz_Hernandez_Ode_to_Paint
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     filePath = saveFileDialog1.FileName;
-                    if (System.IO.File.Exists(filePath))
+                    //clear usage of file to be able to overwrite.
+                    if (System.IO.File.Exists(filePath)) {
+                        paintPanel.Image.Dispose();
+                        target.Dispose();
                         System.IO.File.Delete(filePath);
+                    }
 
+                    saveImg.Save(filePath);
+                    saveImg.Dispose();
+                    //reload form
+                    Form1_Load(sender, e);
                     isSaved = true;
                 }
             }
         }
 
+        //opens up a png file and pastes it to the screen, then calls form1_load to get everything ready to draw
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isSaved == false)
+            if (!isSaved)
             {
                 var confirmResult = MessageBox.Show("Do you want to save changes?", "Unsaved", MessageBoxButtons.YesNo);
                 if (confirmResult == DialogResult.Yes)
@@ -341,15 +415,21 @@ namespace Schulz_Hernandez_Ode_to_Paint
                 if (openFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     filePath = openFileDialog1.FileName;
-                    //Handle openning the file here. clear everything
+                    using(StreamWriter sw = System.IO.File.AppendText(@"RecentlyOpened.txt"))
+                    {
+                        sw.WriteLine(filePath);
+                    }
+                    //System.IO.File.AppendText(@"RecentlyOpened.txt") = filePath;
+                    //System.IO.File.WriteAllLines(@"C:\Users\Public\TestFolder\WriteLines.txt", lines);
+                    //Handle openning the file here. clear everything and set up to draw
                     undoStack.Clear();
                     redoStack.Clear();
-                    target = new Bitmap(filePath);
-                    paintPanel.Image = target;
-                    redoStack.Push(target);
+                    paintPanel.Image.Dispose();
+                    Form1_Load(sender, e);
                     isSaved = true;
                 }
             }
+            
         }
     }
 }
