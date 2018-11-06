@@ -16,6 +16,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         private bool isPaused = false;
         private bool isSaved = true;
         private bool hasCheated = false;
+        private string gameFilePath = string.Empty;
         Stopwatch stopwatch = Stopwatch.StartNew();
 
         public Form1()
@@ -67,9 +68,16 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         //Gives focus to a label when clicked to allow input to change
         private void label_Click(object sender, EventArgs e)
         {
-            Label holder = (Label)sender;
-            holder.Focus();
-            holder.BackColor = Color.LemonChiffon;
+                Label holder = (Label)sender;
+                holder.Focus();
+                holder.BackColor = Color.LemonChiffon;
+        }
+
+        //Cells defined by game file will be disabled from user changing the values. That would be too easy!
+        //NOTE: This will have to be reset if a new game is loaded up, or code it to set the click event when loaded
+        private void labelDisabled_Click(object sender, EventArgs e)
+        {
+            //Does nothing. That is the point.
         }
 
         //When focus is lost, visually represent this to the user
@@ -112,6 +120,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         private void resetButton_Click(object sender, EventArgs e)
         {
             var confirmResult = MessageBox.Show("Do reset the current Game? You will lose any progress made", "Reset?", MessageBoxButtons.YesNo);
+            gameFilePath = "E:\\Development\\Visual Studio\\.Net_programming\\Ben_Schulz_Assign_1\\Schulz_Hernandez Ye Old Sudoku\\Schulz_Hernandez Ye Old Sudoku\\Puzzles\\Easy\\e1.txt"; //RecentlyOpened.txt
 
             if (confirmResult == DialogResult.Yes)
             {
@@ -121,13 +130,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                     isPaused = false;
 
                 stopwatch.Restart();
-                foreach(Control x in cellContainer.Controls)
-                {
-                    if(x is Label)
-                    {
-                        x.Text = string.Empty;
-                    }
-                }
+                generateGame(gameFilePath);
 
                 isSaved = true;
                 hasCheated = false;
@@ -137,7 +140,10 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
 
         private void checkButton_Click(object sender, EventArgs e)
         {
+            foreach(Control x in cellContainer.Controls)
+            {
 
+            }
         }
 
         private void helpButton_Click(object sender, EventArgs e)
@@ -167,8 +173,46 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                         saveButton_Click(sender, e);
                     }
                 }
-
                 //Now open a new game for user
+                //gameFilePath = @"E:\\Development\\Visual Studio\\.Net_programming\\Ben_Schulz_Assign_1\\Schulz_Hernandez Ye Old Sudoku\\Schulz_Hernandez Ye Old Sudoku\\Puzzles\\Easy\\e1.txt";
+            }
+        }
+
+        private void generateGame(string filePath)
+        {
+           
+            string[] lines = System.IO.File.ReadAllLines(gameFilePath);
+            int cell = 0;
+            int row = 0;
+
+            //Had to make sure the loop iterated by tabindex and not whatever weird ordering system it was using by default.
+            foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
+            {
+
+                if (lines[row][cell] != '0')
+                {
+                    x.Text = lines[row][cell].ToString();
+                    x.BackColor = Color.FromArgb(210, 210, 210);
+                    x.Click += new EventHandler(labelDisabled_Click);
+                    x.Click -= new EventHandler(label_Click);
+                    x.Cursor = Cursors.Arrow;
+                }
+                else
+                {
+                    x.Text = string.Empty;
+                    x.BackColor = Color.FromArgb(232, 232, 232);
+                    x.Click -= new EventHandler(labelDisabled_Click);
+                    x.Click += new EventHandler(label_Click);
+                    x.Cursor = Cursors.Hand;
+                }
+
+                cell++;
+
+                if (cell % 9 == 0)
+                {
+                    cell = 0;
+                    row++;
+                }
 
             }
         }

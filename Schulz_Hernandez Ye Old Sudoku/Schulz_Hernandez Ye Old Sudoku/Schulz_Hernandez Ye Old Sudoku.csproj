@@ -79,5 +79,21 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Puzzles\directory.txt" />
+    <Content Include="Puzzles\Easy\e1.txt" />
+    <Content Include="Puzzles\Easy\e2.txt" />
+    <Content Include="Puzzles\Easy\e3.txt" />
+    <Content Include="Puzzles\Easy\e4.txt" />
+    <Content Include="Puzzles\Hard\h1.txt" />
+    <Content Include="Puzzles\Hard\h2.txt" />
+    <Content Include="Puzzles\Hard\h3.txt" />
+    <Content Include="Puzzles\Hard\h4.txt" />
+    <Content Include="Puzzles\Medium\m1.txt" />
+    <Content Include="Puzzles\Medium\m2.txt" />
+    <Content Include="Puzzles\Medium\m3.txt" />
+    <Content Include="Puzzles\Medium\m4.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
