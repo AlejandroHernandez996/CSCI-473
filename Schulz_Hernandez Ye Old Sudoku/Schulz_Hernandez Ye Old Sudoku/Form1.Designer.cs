@@ -30,26 +30,27 @@
         {
             this.components = new System.ComponentModel.Container();
             this.coverPanel = new System.Windows.Forms.Panel();
-            this.Options = new System.Windows.Forms.GroupBox();
-            this.saveButton = new System.Windows.Forms.Button();
-            this.openButton = new System.Windows.Forms.Button();
-            this.pauseButton = new System.Windows.Forms.Button();
-            this.resetButton = new System.Windows.Forms.Button();
-            this.checkButton = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.easyButton = new System.Windows.Forms.Button();
-            this.mediumButton = new System.Windows.Forms.Button();
-            this.hardButton = new System.Windows.Forms.Button();
-            this.helpButton = new System.Windows.Forms.Button();
-            this.label82 = new System.Windows.Forms.Label();
             this.pauseMenu = new System.Windows.Forms.Panel();
-            this.label83 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.label83 = new System.Windows.Forms.Label();
+            this.Options = new System.Windows.Forms.GroupBox();
+            this.helpButton = new System.Windows.Forms.Button();
+            this.checkButton = new System.Windows.Forms.Button();
+            this.resetButton = new System.Windows.Forms.Button();
+            this.pauseButton = new System.Windows.Forms.Button();
+            this.openButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.hardButton = new System.Windows.Forms.Button();
+            this.mediumButton = new System.Windows.Forms.Button();
+            this.easyButton = new System.Windows.Forms.Button();
+            this.label82 = new System.Windows.Forms.Label();
             this.timeBox = new System.Windows.Forms.GroupBox();
             this.timeElapsed = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.cellContainer = new System.Windows.Forms.Panel();
             this.cell81 = new System.Windows.Forms.Label();
+            this.cell63 = new System.Windows.Forms.Label();
             this.cell80 = new System.Windows.Forms.Label();
             this.cell79 = new System.Windows.Forms.Label();
             this.cell72 = new System.Windows.Forms.Label();
@@ -129,11 +130,11 @@
             this.cell3 = new System.Windows.Forms.Label();
             this.cell2 = new System.Windows.Forms.Label();
             this.cell1 = new System.Windows.Forms.Label();
-            this.cell63 = new System.Windows.Forms.Label();
+            this.debugBox = new System.Windows.Forms.TextBox();
             this.coverPanel.SuspendLayout();
+            this.pauseMenu.SuspendLayout();
             this.Options.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.pauseMenu.SuspendLayout();
             this.timeBox.SuspendLayout();
             this.cellContainer.SuspendLayout();
             this.SuspendLayout();
@@ -147,6 +148,41 @@
             this.coverPanel.Name = "coverPanel";
             this.coverPanel.Size = new System.Drawing.Size(364, 364);
             this.coverPanel.TabIndex = 81;
+            // 
+            // pauseMenu
+            // 
+            this.pauseMenu.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pauseMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.pauseMenu.Controls.Add(this.button1);
+            this.pauseMenu.Controls.Add(this.label83);
+            this.pauseMenu.Location = new System.Drawing.Point(79, 97);
+            this.pauseMenu.Name = "pauseMenu";
+            this.pauseMenu.Size = new System.Drawing.Size(205, 100);
+            this.pauseMenu.TabIndex = 85;
+            this.pauseMenu.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 50);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(192, 34);
+            this.button1.TabIndex = 85;
+            this.button1.Text = "Resume";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.pauseButton_Click);
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
+            this.label83.ForeColor = System.Drawing.Color.White;
+            this.label83.Location = new System.Drawing.Point(68, 10);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(69, 20);
+            this.label83.TabIndex = 0;
+            this.label83.Text = "Paused";
             // 
             // Options
             // 
@@ -163,35 +199,25 @@
             this.Options.TabStop = false;
             this.Options.Text = "Game Options";
             // 
-            // saveButton
+            // helpButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(7, 19);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(192, 34);
-            this.saveButton.TabIndex = 0;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.helpButton.Location = new System.Drawing.Point(6, 219);
+            this.helpButton.Name = "helpButton";
+            this.helpButton.Size = new System.Drawing.Size(192, 34);
+            this.helpButton.TabIndex = 6;
+            this.helpButton.Text = "Help";
+            this.helpButton.UseVisualStyleBackColor = true;
+            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
             // 
-            // openButton
+            // checkButton
             // 
-            this.openButton.Location = new System.Drawing.Point(7, 59);
-            this.openButton.Name = "openButton";
-            this.openButton.Size = new System.Drawing.Size(192, 34);
-            this.openButton.TabIndex = 1;
-            this.openButton.Text = "Open";
-            this.openButton.UseVisualStyleBackColor = true;
-            this.openButton.Click += new System.EventHandler(this.openButton_Click);
-            // 
-            // pauseButton
-            // 
-            this.pauseButton.Location = new System.Drawing.Point(7, 99);
-            this.pauseButton.Name = "pauseButton";
-            this.pauseButton.Size = new System.Drawing.Size(192, 34);
-            this.pauseButton.TabIndex = 3;
-            this.pauseButton.Text = "Pause";
-            this.pauseButton.UseVisualStyleBackColor = true;
-            this.pauseButton.Click += new System.EventHandler(this.pauseButton_Click);
+            this.checkButton.Location = new System.Drawing.Point(7, 179);
+            this.checkButton.Name = "checkButton";
+            this.checkButton.Size = new System.Drawing.Size(192, 34);
+            this.checkButton.TabIndex = 5;
+            this.checkButton.Text = "Check";
+            this.checkButton.UseVisualStyleBackColor = true;
+            this.checkButton.Click += new System.EventHandler(this.checkButton_Click);
             // 
             // resetButton
             // 
@@ -203,15 +229,35 @@
             this.resetButton.UseVisualStyleBackColor = true;
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
-            // checkButton
+            // pauseButton
             // 
-            this.checkButton.Location = new System.Drawing.Point(7, 179);
-            this.checkButton.Name = "checkButton";
-            this.checkButton.Size = new System.Drawing.Size(192, 34);
-            this.checkButton.TabIndex = 5;
-            this.checkButton.Text = "Check";
-            this.checkButton.UseVisualStyleBackColor = true;
-            this.checkButton.Click += new System.EventHandler(this.checkButton_Click);
+            this.pauseButton.Location = new System.Drawing.Point(7, 99);
+            this.pauseButton.Name = "pauseButton";
+            this.pauseButton.Size = new System.Drawing.Size(192, 34);
+            this.pauseButton.TabIndex = 3;
+            this.pauseButton.Text = "Pause";
+            this.pauseButton.UseVisualStyleBackColor = true;
+            this.pauseButton.Click += new System.EventHandler(this.pauseButton_Click);
+            // 
+            // openButton
+            // 
+            this.openButton.Location = new System.Drawing.Point(7, 59);
+            this.openButton.Name = "openButton";
+            this.openButton.Size = new System.Drawing.Size(192, 34);
+            this.openButton.TabIndex = 1;
+            this.openButton.Text = "Open";
+            this.openButton.UseVisualStyleBackColor = true;
+            this.openButton.Click += new System.EventHandler(this.openButton_Click);
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(7, 19);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(192, 34);
+            this.saveButton.TabIndex = 0;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // groupBox1
             // 
@@ -225,16 +271,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "New Game";
             // 
-            // easyButton
+            // hardButton
             // 
-            this.easyButton.Location = new System.Drawing.Point(6, 18);
-            this.easyButton.Margin = new System.Windows.Forms.Padding(2);
-            this.easyButton.Name = "easyButton";
-            this.easyButton.Size = new System.Drawing.Size(115, 35);
-            this.easyButton.TabIndex = 7;
-            this.easyButton.Text = "Easy";
-            this.easyButton.UseVisualStyleBackColor = true;
-            this.easyButton.Click += new System.EventHandler(this.difficultyButton_Click);
+            this.hardButton.Location = new System.Drawing.Point(243, 18);
+            this.hardButton.Margin = new System.Windows.Forms.Padding(2);
+            this.hardButton.Name = "hardButton";
+            this.hardButton.Size = new System.Drawing.Size(115, 35);
+            this.hardButton.TabIndex = 9;
+            this.hardButton.Text = "Hard";
+            this.hardButton.UseVisualStyleBackColor = true;
+            this.hardButton.Click += new System.EventHandler(this.difficultyButton_Click);
             // 
             // mediumButton
             // 
@@ -247,26 +293,16 @@
             this.mediumButton.UseVisualStyleBackColor = true;
             this.mediumButton.Click += new System.EventHandler(this.difficultyButton_Click);
             // 
-            // hardButton
+            // easyButton
             // 
-            this.hardButton.Location = new System.Drawing.Point(243, 18);
-            this.hardButton.Margin = new System.Windows.Forms.Padding(2);
-            this.hardButton.Name = "hardButton";
-            this.hardButton.Size = new System.Drawing.Size(115, 35);
-            this.hardButton.TabIndex = 9;
-            this.hardButton.Text = "Hard";
-            this.hardButton.UseVisualStyleBackColor = true;
-            this.hardButton.Click += new System.EventHandler(this.difficultyButton_Click);
-            // 
-            // helpButton
-            // 
-            this.helpButton.Location = new System.Drawing.Point(6, 219);
-            this.helpButton.Name = "helpButton";
-            this.helpButton.Size = new System.Drawing.Size(192, 34);
-            this.helpButton.TabIndex = 6;
-            this.helpButton.Text = "Help";
-            this.helpButton.UseVisualStyleBackColor = true;
-            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
+            this.easyButton.Location = new System.Drawing.Point(6, 18);
+            this.easyButton.Margin = new System.Windows.Forms.Padding(2);
+            this.easyButton.Name = "easyButton";
+            this.easyButton.Size = new System.Drawing.Size(115, 35);
+            this.easyButton.TabIndex = 7;
+            this.easyButton.Text = "Easy";
+            this.easyButton.UseVisualStyleBackColor = true;
+            this.easyButton.Click += new System.EventHandler(this.difficultyButton_Click);
             // 
             // label82
             // 
@@ -277,41 +313,6 @@
             this.label82.Size = new System.Drawing.Size(259, 45);
             this.label82.TabIndex = 84;
             this.label82.Text = "Ye Old Sudoku";
-            // 
-            // pauseMenu
-            // 
-            this.pauseMenu.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pauseMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.pauseMenu.Controls.Add(this.button1);
-            this.pauseMenu.Controls.Add(this.label83);
-            this.pauseMenu.Location = new System.Drawing.Point(79, 97);
-            this.pauseMenu.Name = "pauseMenu";
-            this.pauseMenu.Size = new System.Drawing.Size(205, 100);
-            this.pauseMenu.TabIndex = 85;
-            this.pauseMenu.Visible = false;
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
-            this.label83.ForeColor = System.Drawing.Color.White;
-            this.label83.Location = new System.Drawing.Point(68, 10);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(69, 20);
-            this.label83.TabIndex = 0;
-            this.label83.Text = "Paused";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(6, 50);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(192, 34);
-            this.button1.TabIndex = 85;
-            this.button1.Text = "Resume";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.pauseButton_Click);
             // 
             // timeBox
             // 
@@ -339,6 +340,8 @@
             // 
             // cellContainer
             // 
+            this.cellContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
+            this.cellContainer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.cellContainer.Controls.Add(this.cell81);
             this.cellContainer.Controls.Add(this.cell63);
             this.cellContainer.Controls.Add(this.cell80);
@@ -420,9 +423,9 @@
             this.cellContainer.Controls.Add(this.cell3);
             this.cellContainer.Controls.Add(this.cell2);
             this.cellContainer.Controls.Add(this.cell1);
-            this.cellContainer.Location = new System.Drawing.Point(55, 80);
+            this.cellContainer.Location = new System.Drawing.Point(65, 80);
             this.cellContainer.Name = "cellContainer";
-            this.cellContainer.Size = new System.Drawing.Size(383, 370);
+            this.cellContainer.Size = new System.Drawing.Size(364, 364);
             this.cellContainer.TabIndex = 3;
             // 
             // cell81
@@ -432,7 +435,7 @@
             this.cell81.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell81.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell81.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell81.Location = new System.Drawing.Point(333, 327);
+            this.cell81.Location = new System.Drawing.Point(324, 324);
             this.cell81.Margin = new System.Windows.Forms.Padding(0);
             this.cell81.Name = "cell81";
             this.cell81.Size = new System.Drawing.Size(40, 40);
@@ -441,6 +444,22 @@
             this.cell81.Click += new System.EventHandler(this.label_Click);
             this.cell81.Leave += new System.EventHandler(this.label_Leave);
             // 
+            // cell63
+            // 
+            this.cell63.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(232)))), ((int)(((byte)(232)))));
+            this.cell63.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cell63.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cell63.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cell63.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
+            this.cell63.Location = new System.Drawing.Point(324, 244);
+            this.cell63.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.cell63.Name = "cell63";
+            this.cell63.Size = new System.Drawing.Size(40, 40);
+            this.cell63.TabIndex = 63;
+            this.cell63.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cell63.Click += new System.EventHandler(this.label_Click);
+            this.cell63.Leave += new System.EventHandler(this.label_Leave);
+            // 
             // cell80
             // 
             this.cell80.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(232)))), ((int)(((byte)(232)))));
@@ -448,7 +467,7 @@
             this.cell80.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell80.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell80.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell80.Location = new System.Drawing.Point(293, 327);
+            this.cell80.Location = new System.Drawing.Point(284, 324);
             this.cell80.Margin = new System.Windows.Forms.Padding(0);
             this.cell80.Name = "cell80";
             this.cell80.Size = new System.Drawing.Size(40, 40);
@@ -464,7 +483,7 @@
             this.cell79.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell79.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell79.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell79.Location = new System.Drawing.Point(253, 327);
+            this.cell79.Location = new System.Drawing.Point(244, 324);
             this.cell79.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell79.Name = "cell79";
             this.cell79.Size = new System.Drawing.Size(40, 40);
@@ -480,7 +499,7 @@
             this.cell72.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell72.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell72.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell72.Location = new System.Drawing.Point(333, 287);
+            this.cell72.Location = new System.Drawing.Point(324, 284);
             this.cell72.Margin = new System.Windows.Forms.Padding(0);
             this.cell72.Name = "cell72";
             this.cell72.Size = new System.Drawing.Size(40, 40);
@@ -496,7 +515,7 @@
             this.cell71.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell71.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell71.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell71.Location = new System.Drawing.Point(293, 287);
+            this.cell71.Location = new System.Drawing.Point(284, 284);
             this.cell71.Margin = new System.Windows.Forms.Padding(0);
             this.cell71.Name = "cell71";
             this.cell71.Size = new System.Drawing.Size(40, 40);
@@ -512,7 +531,7 @@
             this.cell70.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell70.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell70.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell70.Location = new System.Drawing.Point(253, 287);
+            this.cell70.Location = new System.Drawing.Point(244, 284);
             this.cell70.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell70.Name = "cell70";
             this.cell70.Size = new System.Drawing.Size(40, 40);
@@ -528,7 +547,7 @@
             this.cell62.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell62.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell62.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell62.Location = new System.Drawing.Point(293, 247);
+            this.cell62.Location = new System.Drawing.Point(284, 244);
             this.cell62.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell62.Name = "cell62";
             this.cell62.Size = new System.Drawing.Size(40, 40);
@@ -544,7 +563,7 @@
             this.cell61.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell61.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell61.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell61.Location = new System.Drawing.Point(253, 247);
+            this.cell61.Location = new System.Drawing.Point(244, 244);
             this.cell61.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell61.Name = "cell61";
             this.cell61.Size = new System.Drawing.Size(40, 40);
@@ -560,7 +579,7 @@
             this.cell78.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell78.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell78.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell78.Location = new System.Drawing.Point(211, 327);
+            this.cell78.Location = new System.Drawing.Point(202, 324);
             this.cell78.Margin = new System.Windows.Forms.Padding(0);
             this.cell78.Name = "cell78";
             this.cell78.Size = new System.Drawing.Size(40, 40);
@@ -576,7 +595,7 @@
             this.cell77.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell77.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell77.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell77.Location = new System.Drawing.Point(171, 327);
+            this.cell77.Location = new System.Drawing.Point(162, 324);
             this.cell77.Margin = new System.Windows.Forms.Padding(0);
             this.cell77.Name = "cell77";
             this.cell77.Size = new System.Drawing.Size(40, 40);
@@ -592,7 +611,7 @@
             this.cell76.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell76.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell76.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell76.Location = new System.Drawing.Point(131, 327);
+            this.cell76.Location = new System.Drawing.Point(122, 324);
             this.cell76.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell76.Name = "cell76";
             this.cell76.Size = new System.Drawing.Size(40, 40);
@@ -608,7 +627,7 @@
             this.cell69.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell69.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell69.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell69.Location = new System.Drawing.Point(211, 287);
+            this.cell69.Location = new System.Drawing.Point(202, 284);
             this.cell69.Margin = new System.Windows.Forms.Padding(0);
             this.cell69.Name = "cell69";
             this.cell69.Size = new System.Drawing.Size(40, 40);
@@ -624,7 +643,7 @@
             this.cell68.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell68.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell68.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell68.Location = new System.Drawing.Point(171, 287);
+            this.cell68.Location = new System.Drawing.Point(162, 284);
             this.cell68.Margin = new System.Windows.Forms.Padding(0);
             this.cell68.Name = "cell68";
             this.cell68.Size = new System.Drawing.Size(40, 40);
@@ -640,7 +659,7 @@
             this.cell67.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell67.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell67.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell67.Location = new System.Drawing.Point(131, 287);
+            this.cell67.Location = new System.Drawing.Point(122, 284);
             this.cell67.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell67.Name = "cell67";
             this.cell67.Size = new System.Drawing.Size(40, 40);
@@ -656,7 +675,7 @@
             this.cell60.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell60.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell60.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell60.Location = new System.Drawing.Point(211, 247);
+            this.cell60.Location = new System.Drawing.Point(202, 244);
             this.cell60.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell60.Name = "cell60";
             this.cell60.Size = new System.Drawing.Size(40, 40);
@@ -672,7 +691,7 @@
             this.cell59.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell59.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell59.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell59.Location = new System.Drawing.Point(171, 247);
+            this.cell59.Location = new System.Drawing.Point(162, 244);
             this.cell59.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell59.Name = "cell59";
             this.cell59.Size = new System.Drawing.Size(40, 40);
@@ -688,7 +707,7 @@
             this.cell58.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell58.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell58.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell58.Location = new System.Drawing.Point(131, 247);
+            this.cell58.Location = new System.Drawing.Point(122, 244);
             this.cell58.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell58.Name = "cell58";
             this.cell58.Size = new System.Drawing.Size(40, 40);
@@ -704,7 +723,7 @@
             this.cell75.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell75.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell75.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell75.Location = new System.Drawing.Point(89, 327);
+            this.cell75.Location = new System.Drawing.Point(80, 324);
             this.cell75.Margin = new System.Windows.Forms.Padding(0);
             this.cell75.Name = "cell75";
             this.cell75.Size = new System.Drawing.Size(40, 40);
@@ -720,7 +739,7 @@
             this.cell74.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell74.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell74.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell74.Location = new System.Drawing.Point(49, 327);
+            this.cell74.Location = new System.Drawing.Point(40, 324);
             this.cell74.Margin = new System.Windows.Forms.Padding(0);
             this.cell74.Name = "cell74";
             this.cell74.Size = new System.Drawing.Size(40, 40);
@@ -736,7 +755,7 @@
             this.cell73.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell73.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell73.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell73.Location = new System.Drawing.Point(9, 327);
+            this.cell73.Location = new System.Drawing.Point(0, 324);
             this.cell73.Margin = new System.Windows.Forms.Padding(0);
             this.cell73.Name = "cell73";
             this.cell73.Size = new System.Drawing.Size(40, 40);
@@ -752,7 +771,7 @@
             this.cell66.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell66.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell66.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell66.Location = new System.Drawing.Point(89, 287);
+            this.cell66.Location = new System.Drawing.Point(80, 284);
             this.cell66.Margin = new System.Windows.Forms.Padding(0);
             this.cell66.Name = "cell66";
             this.cell66.Size = new System.Drawing.Size(40, 40);
@@ -768,7 +787,7 @@
             this.cell65.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell65.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell65.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell65.Location = new System.Drawing.Point(49, 287);
+            this.cell65.Location = new System.Drawing.Point(40, 284);
             this.cell65.Margin = new System.Windows.Forms.Padding(0);
             this.cell65.Name = "cell65";
             this.cell65.Size = new System.Drawing.Size(40, 40);
@@ -784,7 +803,7 @@
             this.cell64.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell64.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell64.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell64.Location = new System.Drawing.Point(9, 287);
+            this.cell64.Location = new System.Drawing.Point(0, 284);
             this.cell64.Margin = new System.Windows.Forms.Padding(0);
             this.cell64.Name = "cell64";
             this.cell64.Size = new System.Drawing.Size(40, 40);
@@ -800,7 +819,7 @@
             this.cell57.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell57.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell57.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell57.Location = new System.Drawing.Point(89, 247);
+            this.cell57.Location = new System.Drawing.Point(80, 244);
             this.cell57.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell57.Name = "cell57";
             this.cell57.Size = new System.Drawing.Size(40, 40);
@@ -816,7 +835,7 @@
             this.cell56.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell56.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell56.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell56.Location = new System.Drawing.Point(49, 247);
+            this.cell56.Location = new System.Drawing.Point(40, 244);
             this.cell56.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell56.Name = "cell56";
             this.cell56.Size = new System.Drawing.Size(40, 40);
@@ -832,7 +851,7 @@
             this.cell55.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell55.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell55.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell55.Location = new System.Drawing.Point(9, 247);
+            this.cell55.Location = new System.Drawing.Point(0, 244);
             this.cell55.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell55.Name = "cell55";
             this.cell55.Size = new System.Drawing.Size(40, 40);
@@ -848,7 +867,7 @@
             this.cell54.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell54.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell54.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell54.Location = new System.Drawing.Point(333, 205);
+            this.cell54.Location = new System.Drawing.Point(324, 202);
             this.cell54.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell54.Name = "cell54";
             this.cell54.Size = new System.Drawing.Size(40, 40);
@@ -864,7 +883,7 @@
             this.cell53.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell53.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell53.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell53.Location = new System.Drawing.Point(293, 205);
+            this.cell53.Location = new System.Drawing.Point(284, 202);
             this.cell53.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell53.Name = "cell53";
             this.cell53.Size = new System.Drawing.Size(40, 40);
@@ -880,7 +899,7 @@
             this.cell52.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell52.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell52.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell52.Location = new System.Drawing.Point(253, 205);
+            this.cell52.Location = new System.Drawing.Point(244, 202);
             this.cell52.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell52.Name = "cell52";
             this.cell52.Size = new System.Drawing.Size(40, 40);
@@ -896,7 +915,7 @@
             this.cell45.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell45.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell45.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell45.Location = new System.Drawing.Point(333, 165);
+            this.cell45.Location = new System.Drawing.Point(324, 162);
             this.cell45.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell45.Name = "cell45";
             this.cell45.Size = new System.Drawing.Size(40, 40);
@@ -912,7 +931,7 @@
             this.cell44.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell44.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell44.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell44.Location = new System.Drawing.Point(293, 165);
+            this.cell44.Location = new System.Drawing.Point(284, 162);
             this.cell44.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell44.Name = "cell44";
             this.cell44.Size = new System.Drawing.Size(40, 40);
@@ -928,7 +947,7 @@
             this.cell43.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell43.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell43.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell43.Location = new System.Drawing.Point(253, 165);
+            this.cell43.Location = new System.Drawing.Point(244, 162);
             this.cell43.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell43.Name = "cell43";
             this.cell43.Size = new System.Drawing.Size(40, 40);
@@ -944,7 +963,7 @@
             this.cell36.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell36.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell36.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell36.Location = new System.Drawing.Point(333, 125);
+            this.cell36.Location = new System.Drawing.Point(324, 122);
             this.cell36.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell36.Name = "cell36";
             this.cell36.Size = new System.Drawing.Size(40, 40);
@@ -960,7 +979,7 @@
             this.cell35.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell35.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell35.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell35.Location = new System.Drawing.Point(293, 125);
+            this.cell35.Location = new System.Drawing.Point(284, 122);
             this.cell35.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell35.Name = "cell35";
             this.cell35.Size = new System.Drawing.Size(40, 40);
@@ -976,7 +995,7 @@
             this.cell34.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell34.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell34.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell34.Location = new System.Drawing.Point(253, 125);
+            this.cell34.Location = new System.Drawing.Point(244, 122);
             this.cell34.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell34.Name = "cell34";
             this.cell34.Size = new System.Drawing.Size(40, 40);
@@ -992,7 +1011,7 @@
             this.cell51.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell51.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell51.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell51.Location = new System.Drawing.Point(211, 205);
+            this.cell51.Location = new System.Drawing.Point(202, 202);
             this.cell51.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell51.Name = "cell51";
             this.cell51.Size = new System.Drawing.Size(40, 40);
@@ -1008,7 +1027,7 @@
             this.cell50.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell50.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell50.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell50.Location = new System.Drawing.Point(171, 205);
+            this.cell50.Location = new System.Drawing.Point(162, 202);
             this.cell50.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell50.Name = "cell50";
             this.cell50.Size = new System.Drawing.Size(40, 40);
@@ -1024,7 +1043,7 @@
             this.cell49.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell49.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell49.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell49.Location = new System.Drawing.Point(131, 205);
+            this.cell49.Location = new System.Drawing.Point(122, 202);
             this.cell49.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell49.Name = "cell49";
             this.cell49.Size = new System.Drawing.Size(40, 40);
@@ -1040,7 +1059,7 @@
             this.cell42.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell42.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell42.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell42.Location = new System.Drawing.Point(211, 165);
+            this.cell42.Location = new System.Drawing.Point(202, 162);
             this.cell42.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell42.Name = "cell42";
             this.cell42.Size = new System.Drawing.Size(40, 40);
@@ -1056,7 +1075,7 @@
             this.cell41.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell41.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell41.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell41.Location = new System.Drawing.Point(171, 165);
+            this.cell41.Location = new System.Drawing.Point(162, 162);
             this.cell41.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell41.Name = "cell41";
             this.cell41.Size = new System.Drawing.Size(40, 40);
@@ -1072,7 +1091,7 @@
             this.cell40.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell40.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell40.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell40.Location = new System.Drawing.Point(131, 165);
+            this.cell40.Location = new System.Drawing.Point(122, 162);
             this.cell40.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell40.Name = "cell40";
             this.cell40.Size = new System.Drawing.Size(40, 40);
@@ -1088,7 +1107,7 @@
             this.cell33.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell33.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell33.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell33.Location = new System.Drawing.Point(211, 125);
+            this.cell33.Location = new System.Drawing.Point(202, 122);
             this.cell33.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell33.Name = "cell33";
             this.cell33.Size = new System.Drawing.Size(40, 40);
@@ -1104,7 +1123,7 @@
             this.cell32.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell32.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell32.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell32.Location = new System.Drawing.Point(171, 125);
+            this.cell32.Location = new System.Drawing.Point(162, 122);
             this.cell32.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell32.Name = "cell32";
             this.cell32.Size = new System.Drawing.Size(40, 40);
@@ -1120,7 +1139,7 @@
             this.cell31.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell31.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell31.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell31.Location = new System.Drawing.Point(131, 125);
+            this.cell31.Location = new System.Drawing.Point(122, 122);
             this.cell31.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell31.Name = "cell31";
             this.cell31.Size = new System.Drawing.Size(40, 40);
@@ -1136,7 +1155,7 @@
             this.cell48.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell48.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell48.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell48.Location = new System.Drawing.Point(89, 205);
+            this.cell48.Location = new System.Drawing.Point(80, 202);
             this.cell48.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell48.Name = "cell48";
             this.cell48.Size = new System.Drawing.Size(40, 40);
@@ -1152,7 +1171,7 @@
             this.cell47.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell47.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell47.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell47.Location = new System.Drawing.Point(49, 205);
+            this.cell47.Location = new System.Drawing.Point(40, 202);
             this.cell47.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell47.Name = "cell47";
             this.cell47.Size = new System.Drawing.Size(40, 40);
@@ -1168,7 +1187,7 @@
             this.cell46.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell46.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell46.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell46.Location = new System.Drawing.Point(9, 205);
+            this.cell46.Location = new System.Drawing.Point(0, 202);
             this.cell46.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell46.Name = "cell46";
             this.cell46.Size = new System.Drawing.Size(40, 40);
@@ -1184,7 +1203,7 @@
             this.cell39.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell39.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell39.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell39.Location = new System.Drawing.Point(89, 165);
+            this.cell39.Location = new System.Drawing.Point(80, 162);
             this.cell39.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell39.Name = "cell39";
             this.cell39.Size = new System.Drawing.Size(40, 40);
@@ -1200,7 +1219,7 @@
             this.cell38.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell38.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell38.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell38.Location = new System.Drawing.Point(49, 165);
+            this.cell38.Location = new System.Drawing.Point(40, 162);
             this.cell38.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell38.Name = "cell38";
             this.cell38.Size = new System.Drawing.Size(40, 40);
@@ -1216,7 +1235,7 @@
             this.cell37.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell37.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell37.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell37.Location = new System.Drawing.Point(9, 165);
+            this.cell37.Location = new System.Drawing.Point(0, 162);
             this.cell37.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell37.Name = "cell37";
             this.cell37.Size = new System.Drawing.Size(40, 40);
@@ -1232,7 +1251,7 @@
             this.cell30.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell30.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell30.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell30.Location = new System.Drawing.Point(89, 125);
+            this.cell30.Location = new System.Drawing.Point(80, 122);
             this.cell30.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell30.Name = "cell30";
             this.cell30.Size = new System.Drawing.Size(40, 40);
@@ -1248,7 +1267,7 @@
             this.cell29.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell29.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell29.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell29.Location = new System.Drawing.Point(49, 125);
+            this.cell29.Location = new System.Drawing.Point(40, 122);
             this.cell29.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell29.Name = "cell29";
             this.cell29.Size = new System.Drawing.Size(40, 40);
@@ -1264,7 +1283,7 @@
             this.cell28.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell28.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell28.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell28.Location = new System.Drawing.Point(9, 125);
+            this.cell28.Location = new System.Drawing.Point(0, 122);
             this.cell28.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.cell28.Name = "cell28";
             this.cell28.Size = new System.Drawing.Size(40, 40);
@@ -1280,7 +1299,7 @@
             this.cell27.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell27.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell27.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell27.Location = new System.Drawing.Point(333, 83);
+            this.cell27.Location = new System.Drawing.Point(324, 80);
             this.cell27.Margin = new System.Windows.Forms.Padding(0);
             this.cell27.Name = "cell27";
             this.cell27.Size = new System.Drawing.Size(40, 40);
@@ -1296,7 +1315,7 @@
             this.cell26.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell26.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell26.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell26.Location = new System.Drawing.Point(293, 83);
+            this.cell26.Location = new System.Drawing.Point(284, 80);
             this.cell26.Margin = new System.Windows.Forms.Padding(0);
             this.cell26.Name = "cell26";
             this.cell26.Size = new System.Drawing.Size(40, 40);
@@ -1312,7 +1331,7 @@
             this.cell25.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell25.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell25.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell25.Location = new System.Drawing.Point(253, 83);
+            this.cell25.Location = new System.Drawing.Point(244, 80);
             this.cell25.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell25.Name = "cell25";
             this.cell25.Size = new System.Drawing.Size(40, 40);
@@ -1328,7 +1347,7 @@
             this.cell18.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell18.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell18.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell18.Location = new System.Drawing.Point(333, 43);
+            this.cell18.Location = new System.Drawing.Point(324, 40);
             this.cell18.Margin = new System.Windows.Forms.Padding(0);
             this.cell18.Name = "cell18";
             this.cell18.Size = new System.Drawing.Size(40, 40);
@@ -1344,7 +1363,7 @@
             this.cell17.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell17.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell17.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell17.Location = new System.Drawing.Point(293, 43);
+            this.cell17.Location = new System.Drawing.Point(284, 40);
             this.cell17.Margin = new System.Windows.Forms.Padding(0);
             this.cell17.Name = "cell17";
             this.cell17.Size = new System.Drawing.Size(40, 40);
@@ -1360,7 +1379,7 @@
             this.cell16.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell16.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell16.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell16.Location = new System.Drawing.Point(253, 43);
+            this.cell16.Location = new System.Drawing.Point(244, 40);
             this.cell16.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell16.Name = "cell16";
             this.cell16.Size = new System.Drawing.Size(40, 40);
@@ -1376,7 +1395,7 @@
             this.cell9.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell9.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell9.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell9.Location = new System.Drawing.Point(333, 3);
+            this.cell9.Location = new System.Drawing.Point(324, 0);
             this.cell9.Margin = new System.Windows.Forms.Padding(0);
             this.cell9.Name = "cell9";
             this.cell9.Size = new System.Drawing.Size(40, 40);
@@ -1392,7 +1411,7 @@
             this.cell8.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell8.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell8.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell8.Location = new System.Drawing.Point(293, 3);
+            this.cell8.Location = new System.Drawing.Point(284, 0);
             this.cell8.Margin = new System.Windows.Forms.Padding(0);
             this.cell8.Name = "cell8";
             this.cell8.Size = new System.Drawing.Size(40, 40);
@@ -1408,7 +1427,7 @@
             this.cell7.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell7.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell7.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell7.Location = new System.Drawing.Point(253, 3);
+            this.cell7.Location = new System.Drawing.Point(244, 0);
             this.cell7.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell7.Name = "cell7";
             this.cell7.Size = new System.Drawing.Size(40, 40);
@@ -1424,7 +1443,7 @@
             this.cell24.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell24.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell24.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell24.Location = new System.Drawing.Point(211, 83);
+            this.cell24.Location = new System.Drawing.Point(202, 80);
             this.cell24.Margin = new System.Windows.Forms.Padding(0);
             this.cell24.Name = "cell24";
             this.cell24.Size = new System.Drawing.Size(40, 40);
@@ -1440,7 +1459,7 @@
             this.cell23.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell23.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell23.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell23.Location = new System.Drawing.Point(171, 83);
+            this.cell23.Location = new System.Drawing.Point(162, 80);
             this.cell23.Margin = new System.Windows.Forms.Padding(0);
             this.cell23.Name = "cell23";
             this.cell23.Size = new System.Drawing.Size(40, 40);
@@ -1456,7 +1475,7 @@
             this.cell22.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell22.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell22.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell22.Location = new System.Drawing.Point(131, 83);
+            this.cell22.Location = new System.Drawing.Point(122, 80);
             this.cell22.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell22.Name = "cell22";
             this.cell22.Size = new System.Drawing.Size(40, 40);
@@ -1472,7 +1491,7 @@
             this.cell15.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell15.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell15.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell15.Location = new System.Drawing.Point(211, 43);
+            this.cell15.Location = new System.Drawing.Point(202, 40);
             this.cell15.Margin = new System.Windows.Forms.Padding(0);
             this.cell15.Name = "cell15";
             this.cell15.Size = new System.Drawing.Size(40, 40);
@@ -1488,7 +1507,7 @@
             this.cell14.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell14.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell14.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell14.Location = new System.Drawing.Point(171, 43);
+            this.cell14.Location = new System.Drawing.Point(162, 40);
             this.cell14.Margin = new System.Windows.Forms.Padding(0);
             this.cell14.Name = "cell14";
             this.cell14.Size = new System.Drawing.Size(40, 40);
@@ -1504,7 +1523,7 @@
             this.cell13.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell13.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell13.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell13.Location = new System.Drawing.Point(131, 43);
+            this.cell13.Location = new System.Drawing.Point(122, 40);
             this.cell13.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell13.Name = "cell13";
             this.cell13.Size = new System.Drawing.Size(40, 40);
@@ -1520,7 +1539,7 @@
             this.cell6.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell6.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell6.Location = new System.Drawing.Point(211, 3);
+            this.cell6.Location = new System.Drawing.Point(202, 0);
             this.cell6.Margin = new System.Windows.Forms.Padding(0);
             this.cell6.Name = "cell6";
             this.cell6.Size = new System.Drawing.Size(40, 40);
@@ -1536,7 +1555,7 @@
             this.cell5.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell5.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell5.Location = new System.Drawing.Point(171, 3);
+            this.cell5.Location = new System.Drawing.Point(162, 0);
             this.cell5.Margin = new System.Windows.Forms.Padding(0);
             this.cell5.Name = "cell5";
             this.cell5.Size = new System.Drawing.Size(40, 40);
@@ -1552,7 +1571,7 @@
             this.cell4.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell4.Location = new System.Drawing.Point(131, 3);
+            this.cell4.Location = new System.Drawing.Point(122, 0);
             this.cell4.Margin = new System.Windows.Forms.Padding(2, 0, 0, 0);
             this.cell4.Name = "cell4";
             this.cell4.Size = new System.Drawing.Size(40, 40);
@@ -1568,7 +1587,7 @@
             this.cell21.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell21.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell21.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell21.Location = new System.Drawing.Point(89, 83);
+            this.cell21.Location = new System.Drawing.Point(80, 80);
             this.cell21.Margin = new System.Windows.Forms.Padding(0);
             this.cell21.Name = "cell21";
             this.cell21.Size = new System.Drawing.Size(40, 40);
@@ -1584,7 +1603,7 @@
             this.cell20.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell20.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell20.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell20.Location = new System.Drawing.Point(49, 83);
+            this.cell20.Location = new System.Drawing.Point(40, 80);
             this.cell20.Margin = new System.Windows.Forms.Padding(0);
             this.cell20.Name = "cell20";
             this.cell20.Size = new System.Drawing.Size(40, 40);
@@ -1600,7 +1619,7 @@
             this.cell19.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell19.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell19.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell19.Location = new System.Drawing.Point(9, 83);
+            this.cell19.Location = new System.Drawing.Point(0, 80);
             this.cell19.Margin = new System.Windows.Forms.Padding(0);
             this.cell19.Name = "cell19";
             this.cell19.Size = new System.Drawing.Size(40, 40);
@@ -1616,7 +1635,7 @@
             this.cell12.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell12.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell12.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell12.Location = new System.Drawing.Point(89, 43);
+            this.cell12.Location = new System.Drawing.Point(80, 40);
             this.cell12.Margin = new System.Windows.Forms.Padding(0);
             this.cell12.Name = "cell12";
             this.cell12.Size = new System.Drawing.Size(40, 40);
@@ -1632,7 +1651,7 @@
             this.cell11.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell11.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell11.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell11.Location = new System.Drawing.Point(49, 43);
+            this.cell11.Location = new System.Drawing.Point(40, 40);
             this.cell11.Margin = new System.Windows.Forms.Padding(0);
             this.cell11.Name = "cell11";
             this.cell11.Size = new System.Drawing.Size(40, 40);
@@ -1648,7 +1667,7 @@
             this.cell10.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell10.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell10.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell10.Location = new System.Drawing.Point(9, 43);
+            this.cell10.Location = new System.Drawing.Point(0, 40);
             this.cell10.Margin = new System.Windows.Forms.Padding(0);
             this.cell10.Name = "cell10";
             this.cell10.Size = new System.Drawing.Size(40, 40);
@@ -1664,7 +1683,7 @@
             this.cell3.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell3.Location = new System.Drawing.Point(89, 3);
+            this.cell3.Location = new System.Drawing.Point(80, 0);
             this.cell3.Margin = new System.Windows.Forms.Padding(0);
             this.cell3.Name = "cell3";
             this.cell3.Size = new System.Drawing.Size(40, 40);
@@ -1680,7 +1699,7 @@
             this.cell2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell2.Location = new System.Drawing.Point(49, 3);
+            this.cell2.Location = new System.Drawing.Point(40, 0);
             this.cell2.Margin = new System.Windows.Forms.Padding(0);
             this.cell2.Name = "cell2";
             this.cell2.Size = new System.Drawing.Size(40, 40);
@@ -1696,7 +1715,7 @@
             this.cell1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cell1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cell1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell1.Location = new System.Drawing.Point(9, 3);
+            this.cell1.Location = new System.Drawing.Point(0, 0);
             this.cell1.Margin = new System.Windows.Forms.Padding(0);
             this.cell1.Name = "cell1";
             this.cell1.Size = new System.Drawing.Size(40, 40);
@@ -1705,21 +1724,17 @@
             this.cell1.Click += new System.EventHandler(this.label_Click);
             this.cell1.Leave += new System.EventHandler(this.label_Leave);
             // 
-            // cell63
+            // debugBox
             // 
-            this.cell63.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(232)))), ((int)(((byte)(232)))));
-            this.cell63.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.cell63.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cell63.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cell63.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.cell63.Location = new System.Drawing.Point(333, 247);
-            this.cell63.Margin = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.cell63.Name = "cell63";
-            this.cell63.Size = new System.Drawing.Size(40, 40);
-            this.cell63.TabIndex = 63;
-            this.cell63.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cell63.Click += new System.EventHandler(this.label_Click);
-            this.cell63.Leave += new System.EventHandler(this.label_Leave);
+            this.debugBox.BackColor = System.Drawing.Color.White;
+            this.debugBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.debugBox.Location = new System.Drawing.Point(473, 411);
+            this.debugBox.Multiline = true;
+            this.debugBox.Name = "debugBox";
+            this.debugBox.ReadOnly = true;
+            this.debugBox.Size = new System.Drawing.Size(205, 116);
+            this.debugBox.TabIndex = 86;
+            this.debugBox.WordWrap = false;
             // 
             // Form1
             // 
@@ -1727,6 +1742,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(750, 562);
+            this.Controls.Add(this.debugBox);
             this.Controls.Add(this.cellContainer);
             this.Controls.Add(this.timeBox);
             this.Controls.Add(this.label82);
@@ -1742,10 +1758,10 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             this.coverPanel.ResumeLayout(false);
-            this.Options.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
             this.pauseMenu.ResumeLayout(false);
             this.pauseMenu.PerformLayout();
+            this.Options.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.timeBox.ResumeLayout(false);
             this.timeBox.PerformLayout();
             this.cellContainer.ResumeLayout(false);
@@ -1856,6 +1872,7 @@
         private System.Windows.Forms.Label cell2;
         private System.Windows.Forms.Label cell1;
         private System.Windows.Forms.Label cell63;
+        private System.Windows.Forms.TextBox debugBox;
     }
 }
 

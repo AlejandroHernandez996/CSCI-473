@@ -1,4 +1,4 @@
-easy/e1.txt
+easy/e1.txt {COMPLETED}
 easy/e2.txt
 easy/e3.txt
 easy/e4.txt

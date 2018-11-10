@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Schulz_Hernandez_Ye_Old_Sudoku
 {
@@ -16,6 +17,9 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         private bool isPaused = false;
         private bool isSaved = true;
         private bool hasCheated = false;
+        private bool cellSelected = false;
+        private const string directoryFilePath = @"..\\..\\Puzzles\\directory.txt";
+        private string[] lines;
         private string gameFilePath = string.Empty;
         Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -27,6 +31,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         private void Form1_Load(object sender, EventArgs e)
         {
             timer1.Start();
+            cellContainer.BackColor = Color.FromArgb(0, 255, 0, 0);
         }
 
         //KeyDown easily checks for backspace and clears the active cell if down
@@ -53,7 +58,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         //KeyPress checks to make sure there is a number from 1 to 9 being entered and enters it
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!isPaused)
+            if (!isPaused && cellSelected)
             {
                 if (System.Text.RegularExpressions.Regex.IsMatch(e.KeyChar.ToString(), "[1-9]"))
                 {
@@ -70,6 +75,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         {
                 Label holder = (Label)sender;
                 holder.Focus();
+                cellSelected = true;
                 holder.BackColor = Color.LemonChiffon;
         }
 
@@ -85,6 +91,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         {
             Label holder = (Label)sender;
             holder.BackColor = Color.FromArgb(232,232,232);
+            cellSelected = false;
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -97,6 +104,8 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
 
         }
 
+
+        //toggles the covering of the board and pauses the clock
         private void pauseButton_Click(object sender, EventArgs e)
         {
             if (isPaused)
@@ -117,32 +126,57 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
             }
         }
 
+        //reset the game to the original before any user input. Resets flags.
         private void resetButton_Click(object sender, EventArgs e)
         {
-            var confirmResult = MessageBox.Show("Do reset the current Game? You will lose any progress made", "Reset?", MessageBoxButtons.YesNo);
-            gameFilePath = "E:\\Development\\Visual Studio\\.Net_programming\\Ben_Schulz_Assign_1\\Schulz_Hernandez Ye Old Sudoku\\Schulz_Hernandez Ye Old Sudoku\\Puzzles\\Easy\\e1.txt"; //RecentlyOpened.txt
-
-            if (confirmResult == DialogResult.Yes)
+            if (!string.IsNullOrEmpty(gameFilePath))
             {
-                if (isPaused)
-                    pauseButton_Click(sender, e);
-                else
-                    isPaused = false;
+                var confirmResult = MessageBox.Show("Do reset the current Game? You will lose any progress made", "Reset?", MessageBoxButtons.YesNo);
 
-                stopwatch.Restart();
-                generateGame(gameFilePath);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    if (isPaused)
+                        pauseButton_Click(sender, e);
+                    else
+                        isPaused = false;
 
-                isSaved = true;
-                hasCheated = false;
+                    stopwatch.Restart();
+                    generateGame(gameFilePath);
+
+                    isSaved = true;
+                    hasCheated = false;
+                }
             }
-
+            else
+            {
+                var confirmResult = MessageBox.Show("No Game is currently loaded", "No Game Loaded", MessageBoxButtons.OK);
+            }
         }
 
+        //Checks the board for mistakes, and changes the background color to display the incorrect values. Only displays one wrong cell at a time, otherwise it would be too easy!
         private void checkButton_Click(object sender, EventArgs e)
         {
-            foreach(Control x in cellContainer.Controls)
+            int row = 10;
+            int cell = 0;
+            if (!string.IsNullOrEmpty(gameFilePath))
             {
+                foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
+                {
+                    if (!string.IsNullOrEmpty(x.Text) && lines[row][cell] != x.Text[0])
+                    {
+                        x.BackColor = Color.FromArgb(215, 244, 78, 66);
+                        return;
+                    }
 
+                    cell++;
+
+                    if (cell % 9 == 0)
+                    {
+                        cell = 0;
+                        row++;
+                        debugBox.Text += "\r\n";
+                    }
+                }
             }
         }
 
@@ -174,14 +208,20 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                     }
                 }
                 //Now open a new game for user
-                //gameFilePath = @"E:\\Development\\Visual Studio\\.Net_programming\\Ben_Schulz_Assign_1\\Schulz_Hernandez Ye Old Sudoku\\Schulz_Hernandez Ye Old Sudoku\\Puzzles\\Easy\\e1.txt";
+                string[] directory = System.IO.File.ReadAllLines(directoryFilePath);
+                var result =
+                    from G in directory
+                    where G.StartsWith(clickedButton.Text.ToLower()) && !G.EndsWith("{COMPLETED}")
+                    select G;
+                debugBox.Text = "Loaded: " + result.FirstOrDefault();
+                gameFilePath = @"..\\..\\Puzzles\\" + result.FirstOrDefault();
+                generateGame(gameFilePath);
             }
         }
 
         private void generateGame(string filePath)
         {
-           
-            string[] lines = System.IO.File.ReadAllLines(gameFilePath);
+            lines = System.IO.File.ReadAllLines(gameFilePath);
             int cell = 0;
             int row = 0;
 
@@ -213,8 +253,12 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                     cell = 0;
                     row++;
                 }
-
             }
+
+            isPaused = false;
+            stopwatch.Restart();
+            isSaved = true;
+            hasCheated = false;
         }
     }
 }
