@@ -32,7 +32,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         private void Form1_Load(object sender, EventArgs e)
         {
             timer1.Start();
-            cellContainer.BackColor = Color.FromArgb(0, 255, 0, 0);
+            cellContainer.BackColor = Color.FromArgb(40, 40, 40);
             incorrectOrEmpty = new List<Control>();
         }
 
@@ -41,7 +41,6 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         {
             if (!isPaused)
             {
-                
                 if (e.KeyCode == Keys.Back)
                 {
                     Label holder = (Label)this.ActiveControl;
@@ -96,9 +95,32 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
             cellSelected = false;
         }
 
+
+        //
         private void saveButton_Click(object sender, EventArgs e)
         {
-            isSaved = true;
+            if(!isSaved && !string.IsNullOrEmpty(gameFilePath)){
+                isSaved = true;
+
+                //Saves current time
+                string[] directory = System.IO.File.ReadAllLines(directoryFilePath);
+                var cTime =
+                    from T in directory
+                    where T.EndsWith(gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}")
+                    select T;
+
+
+                //Trying to get the saving features to work, starting with saving the current game times.
+                if(cTime.Count() > 0)
+                {
+                    debugBox.Text += string.Format("\r\n{0} - {1}", cTime.First(), stopwatch.ToString());
+                }
+                else
+                {
+                    debugBox.Text += string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString());
+                }
+                
+            }
         }
 
         private void openButton_Click(object sender, EventArgs e)
@@ -201,48 +223,53 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
             }
         }
 
-
+        //the user has cheated. Reveal a random empty or incorrect cell and set hasCheated flag to true
         private void helpButton_Click(object sender, EventArgs e)
         {
-            incorrectOrEmpty.Clear();
-            int row = 10;
-            int cell = 0;
-            Random rand = new Random();
-
-            //populates list of empty or otherwise incorrect cells
-            foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
+            if (!string.IsNullOrEmpty(gameFilePath))
             {
-                if (string.IsNullOrEmpty(x.Text) || lines[row][cell] != x.Text[0])
+                incorrectOrEmpty.Clear();
+                int row = 10;
+                int cell = 0;
+                Random rand = new Random();
+
+                //populates list of empty or otherwise incorrect cells
+                foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
                 {
-                    incorrectOrEmpty.Add(x);
-                }
-                cell++;
+                    if (string.IsNullOrEmpty(x.Text) || lines[row][cell] != x.Text[0])
+                    {
+                        incorrectOrEmpty.Add(x);
+                    }
+                    cell++;
 
-                if (cell % 9 == 0)
+                    if (cell % 9 == 0)
+                    {
+                        cell = 0;
+                        row++;
+                    }
+                }
+
+                //grabs the correct value for a random cell that is either empty or incorrect and sets the value to the correct value and sets the cheated flag
+                if (incorrectOrEmpty.Count > 0)
                 {
-                    cell = 0;
-                    row++;
+                    int index = rand.Next() % incorrectOrEmpty.Count();
+                    incorrectOrEmpty.ToArray()[index].BackColor = Color.FromArgb(215, 66, 210, 210);
+
+                    row = ((incorrectOrEmpty.ToArray()[index].TabIndex - 1) / 9) + 10;
+                    cell = ((incorrectOrEmpty.ToArray()[index].TabIndex - 1) % 9);
+                    incorrectOrEmpty.ToArray()[index].Text = lines[row][cell].ToString();
+                    hasCheated = true;
                 }
-            }
-
-            //grabs the correct value for a random cell that is either empty or incorrect and sets the value to the correct value and sets the cheated flag
-            if (incorrectOrEmpty.Count > 0)
-            {
-                int index = rand.Next() % incorrectOrEmpty.Count();
-                incorrectOrEmpty.ToArray()[index].BackColor = Color.FromArgb(215, 66, 210, 210);
-
-                row = ((incorrectOrEmpty.ToArray()[index].TabIndex -1) / 9) + 10;
-                cell = ((incorrectOrEmpty.ToArray()[index].TabIndex -1) % 9);
-                incorrectOrEmpty.ToArray()[index].Text = lines[row][cell].ToString();
-                hasCheated = true;
             }
         }
 
+        //timer for current game; output current elapsed time to the screen
         private void timer1_Tick(object sender, EventArgs e)
         {
             timeElapsed.Text = string.Format("{0:hh\\:mm\\:ss}", stopwatch.Elapsed);
         }
 
+        //opens a game of specified difficulty
         private void difficultyButton_Click(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
@@ -251,7 +278,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
             if (confirmResult == DialogResult.Yes)
             {
                 //if the current game is currently unsaved, ask to save it
-                if (!isSaved)
+                if (!isSaved && !string.IsNullOrEmpty(gameFilePath))
                 {
                     var saveResult = MessageBox.Show("Save current game?", "Save game?", MessageBoxButtons.YesNo);
                     //if they want to save the current game, save it
