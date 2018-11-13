@@ -21,6 +21,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         private const string directoryFilePath = @"..\\..\\Puzzles\\directory.txt";
         private string[] lines;
         private string gameFilePath = string.Empty;
+        private List<Control> incorrectOrEmpty;
         Stopwatch stopwatch = Stopwatch.StartNew();
 
         public Form1()
@@ -32,6 +33,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         {
             timer1.Start();
             cellContainer.BackColor = Color.FromArgb(0, 255, 0, 0);
+            incorrectOrEmpty = new List<Control>();
         }
 
         //KeyDown easily checks for backspace and clears the active cell if down
@@ -156,33 +158,84 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         //Checks the board for mistakes, and changes the background color to display the incorrect values. Only displays one wrong cell at a time, otherwise it would be too easy!
         private void checkButton_Click(object sender, EventArgs e)
         {
+            incorrectOrEmpty.Clear();
             int row = 10;
             int cell = 0;
+            Random rand = new Random();
+
             if (!string.IsNullOrEmpty(gameFilePath))
             {
+                //populates list of empty or otherwise incorrect cells
                 foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
                 {
-                    if (!string.IsNullOrEmpty(x.Text) && lines[row][cell] != x.Text[0])
+                    if (string.IsNullOrEmpty(x.Text) || lines[row][cell] != x.Text[0])
                     {
-                        x.BackColor = Color.FromArgb(215, 244, 78, 66);
-                        return;
+                        incorrectOrEmpty.Add(x);
                     }
-
                     cell++;
 
                     if (cell % 9 == 0)
                     {
                         cell = 0;
                         row++;
-                        debugBox.Text += "\r\n";
                     }
                 }
+                //randomly picks an incorrect cell to notify the player that the specific cell is incorrect. 
+                //Can pick the same cell more than once and multiple cells can be selected at once, thats ok.
+                var incorrect =
+                    from X in incorrectOrEmpty
+                    where !string.IsNullOrEmpty(X.Text)
+                    select X;
+                if (incorrect.Count() > 0)
+                {
+                    int index = rand.Next() % incorrect.Count();
+                    incorrect.ToArray()[index].BackColor = Color.FromArgb(215, 244, 78, 66);   
+                }
+                else
+                {
+                    var progressPopup = MessageBox.Show("They're all correct so far! Way to go!", "So far, so good", MessageBoxButtons.OK);
+                }
+
+                int correct = 81 - incorrectOrEmpty.Count();
+                debugBox.Text += string.Format("\r\n{0} out of 81 cells correct", correct); 
             }
         }
 
+
         private void helpButton_Click(object sender, EventArgs e)
         {
-            hasCheated = true;
+            incorrectOrEmpty.Clear();
+            int row = 10;
+            int cell = 0;
+            Random rand = new Random();
+
+            //populates list of empty or otherwise incorrect cells
+            foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
+            {
+                if (string.IsNullOrEmpty(x.Text) || lines[row][cell] != x.Text[0])
+                {
+                    incorrectOrEmpty.Add(x);
+                }
+                cell++;
+
+                if (cell % 9 == 0)
+                {
+                    cell = 0;
+                    row++;
+                }
+            }
+
+            //grabs the correct value for a random cell that is either empty or incorrect and sets the value to the correct value and sets the cheated flag
+            if (incorrectOrEmpty.Count > 0)
+            {
+                int index = rand.Next() % incorrectOrEmpty.Count();
+                incorrectOrEmpty.ToArray()[index].BackColor = Color.FromArgb(215, 66, 210, 210);
+
+                row = ((incorrectOrEmpty.ToArray()[index].TabIndex -1) / 9) + 10;
+                cell = ((incorrectOrEmpty.ToArray()[index].TabIndex -1) % 9);
+                incorrectOrEmpty.ToArray()[index].Text = lines[row][cell].ToString();
+                hasCheated = true;
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
