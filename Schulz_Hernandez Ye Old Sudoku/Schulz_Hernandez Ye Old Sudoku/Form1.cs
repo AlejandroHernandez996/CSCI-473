@@ -106,20 +106,52 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                 string[] directory = System.IO.File.ReadAllLines(directoryFilePath);
                 var cTime =
                     from T in directory
-                    where T.EndsWith(gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}")
+                    where T.Contains(gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}")
                     select T;
 
 
                 //Trying to get the saving features to work, starting with saving the current game times.
-                if(cTime.Count() > 0)
+                
+                //overwriting an existing save
+                if (cTime.Count() > 0)
                 {
-                    debugBox.Text += string.Format("\r\n{0} - {1}", cTime.First(), stopwatch.ToString());
+                    debugBox.Text += string.Format("\r\nFound: {0}", cTime.First());
+                    
                 }
+                //file has never been saved before
                 else
                 {
                     debugBox.Text += string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString());
+                    using (StreamWriter sw = File.AppendText(directoryFilePath))
+                    {
+                        sw.WriteLine(string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
+                    }
+                    using (StreamWriter sw = File.AppendText(gameFilePath))
+                    {
+                        sw.Write("\n\n");
+                        int cell = 0;
+                        int row = 0;
+                        foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
+                        {
+                            if (string.IsNullOrEmpty(x.Text))
+                            {
+                                sw.Write('0');
+                            }
+                            else
+                            {
+                                sw.Write(x.Text[0]);
+                            }
+                            cell++;
+
+                            if (cell % 9 == 0)
+                            {
+                                cell = 0;
+                                row++;
+                                sw.Write('\n');
+                            }
+                        }
+                    }
                 }
-                
             }
         }
 
@@ -304,6 +336,12 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
             lines = System.IO.File.ReadAllLines(gameFilePath);
             int cell = 0;
             int row = 0;
+
+            //assuming the saved data was put in correctly, this little bit of code loads the game from the last saved state
+            if(lines.Count() > 21)
+            {
+                row = 20;
+            }
 
             //Had to make sure the loop iterated by tabindex and not whatever weird ordering system it was using by default.
             foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
