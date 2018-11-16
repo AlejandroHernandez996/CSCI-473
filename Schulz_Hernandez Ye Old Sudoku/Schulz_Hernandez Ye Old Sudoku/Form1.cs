@@ -35,6 +35,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         {
             timer1.Start();
             cellContainer.BackColor = Color.FromArgb(40, 40, 40);
+            progressText.BackColor = Color.FromArgb(0, 100, 100, 100);
             incorrectOrEmpty = new List<Control>();
         }
 
@@ -141,35 +142,33 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                         }
                     }
                 }
-                //debugBox.Text += string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString())
-                
-
                 var result =
                     from G in directory
                     where G.Contains(gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}")
                     select G;
-
-                if (result.Count() > 0)
+                if (!hasCheated)
                 {
-                    string text = File.ReadAllText(directoryFilePath);
-                    text = text.Replace(result.ToArray()[0], string.Format("{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
-                    File.WriteAllText(directoryFilePath, text);
-
-                    /*string temp = result.ToArray()[0];
-                    debugBox.Text = temp;
-                    temp = temp.Replace(temp, string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
-                    debugBox.Text += temp;
-                    //File.WriteAllText(directoryFilePath, directory.ToString());
-                    */
+                    if (result.Count() > 0)
+                    {
+                        string text = File.ReadAllText(directoryFilePath);
+                        text = text.Replace(result.ToArray()[0], string.Format("{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
+                        File.WriteAllText(directoryFilePath, text);
+                    }
+                    else
+                    {
+                        using (StreamWriter sw = File.AppendText(directoryFilePath))
+                        {
+                            sw.WriteLine(string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
+                        }
+                    }
                 }
                 else
                 {
-                    using (StreamWriter sw = File.AppendText(directoryFilePath))
-                    {
-                        sw.WriteLine(string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
-                    }
+                    string text = File.ReadAllText(directoryFilePath);
+                    text = text.Replace(result.ToArray()[0], " ");
+                    File.WriteAllText(directoryFilePath, text);
+                    debugBox.Text = "cheated - no time: true";
                 }
-
             }
         }
 
@@ -182,9 +181,8 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                 where T.Contains("txt") && !T.Contains("TIME") && !T.Contains("COMPLETED")
                 select T;
             Form2 form2 = new Form2(cTime, this);
+            form2.StartPosition = FormStartPosition.CenterScreen;
             form2.ShowDialog();
-                
-
         }
 
 
@@ -287,7 +285,8 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                 }
 
                 int correct = 81 - incorrectOrEmpty.Count();
-                debugBox.Text += string.Format("\r\n{0} out of 81 cells correct", correct);
+                progressBar1.Value = correct;
+                progressText.Text = string.Format("\r\n{0} out of 81 cells correct", correct);
                 if (correct == 81)
                     stopwatch.Stop();
             }
@@ -329,6 +328,8 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                     cell = ((incorrectOrEmpty.ToArray()[index].TabIndex - 1) % 9);
                     incorrectOrEmpty.ToArray()[index].Text = lines[row][cell].ToString();
                     hasCheated = true;
+                    debugBox.Text = "cheated: true";
+                    isSaved = false;
                 }
             }
         }
@@ -368,10 +369,12 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                 generateGame(gameFilePath);
             }
         }
+
         public TextBox getBox()
         {
             return debugBox;
         }
+
         public void generateGame(string filePath)
         {
             lines = System.IO.File.ReadAllLines(gameFilePath);
@@ -415,9 +418,25 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                     row++;
                 }
             }
+
+            string[] directory = System.IO.File.ReadAllLines(directoryFilePath);
+            TimeSpan savedTime;
+
+            var result =
+                    from G in directory
+                    where G.Contains(gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}")
+                    select G;
+                if (result.Count() > 0)
+                {
+                //text = text.Replace(result.ToArray()[0], string.Format("{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
+                savedTime = new TimeSpan(Convert.ToInt32(result.ToArray()[0].Substring(15, 2)), Convert.ToInt32(result.ToArray()[0].Substring(18, 2)), Convert.ToInt32(result.ToArray()[0].Substring(21, 2)));
+                debugBox.Text = savedTime.ToString();
+            }
+            
            
             isPaused = false;
             stopwatch.Restart();
+            //stopwatch.Elapsed. = savedTime;
             isSaved = true;
             hasCheated = false;
         }

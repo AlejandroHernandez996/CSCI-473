@@ -10,7 +10,3 @@ hard/h1.txt
 hard/h2.txt
 hard/h3.txt
 hard/h4.txt
-
-m2.txt{TIME} - 00:00:04.7164899
-
-e3.txt{TIME} - 00:00:03.5864014

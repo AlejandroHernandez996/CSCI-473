@@ -131,6 +131,8 @@
             this.cell2 = new System.Windows.Forms.Label();
             this.cell1 = new System.Windows.Forms.Label();
             this.debugBox = new System.Windows.Forms.TextBox();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressText = new System.Windows.Forms.Label();
             this.coverPanel.SuspendLayout();
             this.pauseMenu.SuspendLayout();
             this.Options.SuspendLayout();
@@ -1728,13 +1730,31 @@
             // 
             this.debugBox.BackColor = System.Drawing.Color.White;
             this.debugBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.debugBox.Location = new System.Drawing.Point(473, 411);
+            this.debugBox.Location = new System.Drawing.Point(473, 471);
             this.debugBox.Multiline = true;
             this.debugBox.Name = "debugBox";
             this.debugBox.ReadOnly = true;
-            this.debugBox.Size = new System.Drawing.Size(205, 116);
+            this.debugBox.Size = new System.Drawing.Size(205, 47);
             this.debugBox.TabIndex = 86;
             this.debugBox.WordWrap = false;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(473, 410);
+            this.progressBar1.Maximum = 81;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(205, 23);
+            this.progressBar1.Step = 1;
+            this.progressBar1.TabIndex = 87;
+            // 
+            // progressText
+            // 
+            this.progressText.AutoSize = true;
+            this.progressText.BackColor = System.Drawing.Color.Transparent;
+            this.progressText.Location = new System.Drawing.Point(476, 436);
+            this.progressText.Name = "progressText";
+            this.progressText.Size = new System.Drawing.Size(0, 13);
+            this.progressText.TabIndex = 88;
             // 
             // Form1
             // 
@@ -1742,6 +1762,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(750, 562);
+            this.Controls.Add(this.progressText);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.debugBox);
             this.Controls.Add(this.cellContainer);
             this.Controls.Add(this.timeBox);
@@ -1873,6 +1895,8 @@
         private System.Windows.Forms.Label cell1;
         private System.Windows.Forms.Label cell63;
         private System.Windows.Forms.TextBox debugBox;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label progressText;
     }
 }
 
