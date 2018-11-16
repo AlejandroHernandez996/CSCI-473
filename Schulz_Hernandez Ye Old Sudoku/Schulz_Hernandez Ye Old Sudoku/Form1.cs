@@ -10,6 +10,11 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 
+/* Created by Benjamin Schulz and Alejandro Hernandez
+ * .Net Programming
+ * Sudoku game
+ */
+
 namespace Schulz_Hernandez_Ye_Old_Sudoku
 {
     public partial class Form1 : Form
@@ -151,14 +156,14 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                     if (result.Count() > 0)
                     {
                         string text = File.ReadAllText(directoryFilePath);
-                        text = text.Replace(result.ToArray()[0], string.Format("{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
+                        text = text.Replace(result.ToArray()[0], string.Format("{0} - {1}", gameFilePath + "{TIME}", stopwatch.Elapsed.ToString().Substring(0, 8)));
                         File.WriteAllText(directoryFilePath, text);
                     }
                     else
                     {
                         using (StreamWriter sw = File.AppendText(directoryFilePath))
                         {
-                            sw.WriteLine(string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
+                            sw.WriteLine(string.Format("\r\n{0} - {1}", gameFilePath + "{TIME}", stopwatch.Elapsed.ToString().Substring(0, 8)));
                         }
                     }
                 }
@@ -287,8 +292,22 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                 int correct = 81 - incorrectOrEmpty.Count();
                 progressBar1.Value = correct;
                 progressText.Text = string.Format("\r\n{0} out of 81 cells correct", correct);
+
                 if (correct == 81)
+                {
                     stopwatch.Stop();
+
+                    string[] directory = System.IO.File.ReadAllLines(directoryFilePath);
+                    var result =
+                            from G in directory
+                            where G.Contains("{TIME}") && G.Contains(gameFilePath.Substring(16, 4))
+                            orderby G.Substring(G.Count() - 8) ascending
+                            select G;
+
+                    string current = stopwatch.Elapsed.ToString().Substring(0, 8);
+                    string fastest = result.ToArray()[0].Substring(result.ToArray()[0].Count() - 8);
+                    var progressPopup = MessageBox.Show(String.Format("Current Game: {0}\nBest Game: {1}", current, fastest), "Game Over", MessageBoxButtons.OK);
+                }   
             }
         }
 
@@ -428,9 +447,8 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                     select G;
                 if (result.Count() > 0)
                 {
-                //text = text.Replace(result.ToArray()[0], string.Format("{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
-                savedTime = new TimeSpan(Convert.ToInt32(result.ToArray()[0].Substring(15, 2)), Convert.ToInt32(result.ToArray()[0].Substring(18, 2)), Convert.ToInt32(result.ToArray()[0].Substring(21, 2)));
-                debugBox.Text = savedTime.ToString();
+                //savedTime = new TimeSpan(Convert.ToInt32(result.ToArray()[0].Substring(15, 2)), Convert.ToInt32(result.ToArray()[0].Substring(18, 2)), Convert.ToInt32(result.ToArray()[0].Substring(21, 2)));
+                //debugBox.Text = savedTime.ToString();
             }
             
            

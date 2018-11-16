@@ -1736,6 +1736,7 @@
             this.debugBox.ReadOnly = true;
             this.debugBox.Size = new System.Drawing.Size(205, 47);
             this.debugBox.TabIndex = 86;
+            this.debugBox.Visible = false;
             this.debugBox.WordWrap = false;
             // 
             // progressBar1
