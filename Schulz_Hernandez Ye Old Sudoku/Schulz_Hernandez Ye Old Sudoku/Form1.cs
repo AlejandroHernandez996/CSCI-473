@@ -20,7 +20,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         private bool cellSelected = false;
         private const string directoryFilePath = @"..\\..\\Puzzles\\directory.txt";
         private string[] lines;
-        private string gameFilePath = string.Empty;
+        public string gameFilePath = string.Empty;
         private List<Control> incorrectOrEmpty;
         Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -155,8 +155,17 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
             }
         }
 
+        //Opens a form to be able to choose what game you want to pick
         private void openButton_Click(object sender, EventArgs e)
         {
+            string[] dir = System.IO.File.ReadAllLines(directoryFilePath);
+            var cTime =
+                from T in dir
+                where T.Contains("txt") && !T.Contains("TIME") && !T.Contains("COMPLETED")
+                select T;
+            Form2 form2 = new Form2(cTime, this);
+            form2.ShowDialog();
+                
 
         }
 
@@ -251,7 +260,9 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                 }
 
                 int correct = 81 - incorrectOrEmpty.Count();
-                debugBox.Text += string.Format("\r\n{0} out of 81 cells correct", correct); 
+                debugBox.Text += string.Format("\r\n{0} out of 81 cells correct", correct);
+                if (correct == 81)
+                    stopwatch.Stop();
             }
         }
 
@@ -331,7 +342,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
             }
         }
 
-        private void generateGame(string filePath)
+        public void generateGame(string filePath)
         {
             lines = System.IO.File.ReadAllLines(gameFilePath);
             int cell = 0;
