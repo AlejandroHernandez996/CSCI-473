@@ -18,6 +18,8 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         private bool isSaved = true;
         private bool hasCheated = false;
         private bool cellSelected = false;
+        private bool reset = false;
+
         private const string directoryFilePath = @"..\\..\\Puzzles\\directory.txt";
         private string[] lines;
         public string gameFilePath = string.Empty;
@@ -104,54 +106,70 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
 
                 //Saves current time
                 string[] directory = System.IO.File.ReadAllLines(directoryFilePath);
-                var cTime =
-                    from T in directory
-                    where T.Contains(gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}")
-                    select T;
-
-
-                //Trying to get the saving features to work, starting with saving the current game times.
-                
-                //overwriting an existing save
-                if (cTime.Count() > 0)
+                //debugBox.Text += string.Format("\r\nFound: {0}", cTime.First());
+                using (StreamWriter sw = new StreamWriter(gameFilePath, false))
                 {
-                    debugBox.Text += string.Format("\r\nFound: {0}", cTime.First());
-                    
+                    for (int i = 0; i < 19; i++)
+                    {
+                        sw.WriteLine(lines[i]);
+                    }
                 }
-                //file has never been saved before
+
+                using (StreamWriter sw = File.AppendText(gameFilePath))
+                {
+                    int cell = 0;
+                    int row = 0;
+                    sw.Write("\n");
+                    foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
+                    {
+                        if (string.IsNullOrEmpty(x.Text))
+                        {
+                            sw.Write('0');
+                        }
+                        else
+                        {
+                            sw.Write(x.Text[0]);
+                        }
+                        cell++;
+
+                        if (cell % 9 == 0)
+                        {
+                            cell = 0;
+                            row++;
+                            if (!(x.TabIndex == 81))
+                                sw.Write('\n');
+                        }
+                    }
+                }
+                //debugBox.Text += string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString())
+                
+
+                var result =
+                    from G in directory
+                    where G.Contains(gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}")
+                    select G;
+
+                if (result.Count() > 0)
+                {
+                    string text = File.ReadAllText(directoryFilePath);
+                    text = text.Replace(result.ToArray()[0], string.Format("{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
+                    File.WriteAllText(directoryFilePath, text);
+
+                    /*string temp = result.ToArray()[0];
+                    debugBox.Text = temp;
+                    temp = temp.Replace(temp, string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
+                    debugBox.Text += temp;
+                    //File.WriteAllText(directoryFilePath, directory.ToString());
+                    */
+                }
                 else
                 {
-                    debugBox.Text += string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString());
                     using (StreamWriter sw = File.AppendText(directoryFilePath))
                     {
                         sw.WriteLine(string.Format("\r\n{0} - {1}", gameFilePath.Substring(gameFilePath.Count() - 6) + "{TIME}", stopwatch.Elapsed.ToString()));
                     }
-                    using (StreamWriter sw = File.AppendText(gameFilePath))
-                    {
-                        sw.Write("\n\n");
-                        int cell = 0;
-                        int row = 0;
-                        foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
-                        {
-                            if (string.IsNullOrEmpty(x.Text))
-                            {
-                                sw.Write('0');
-                            }
-                            else
-                            {
-                                sw.Write(x.Text[0]);
-                            }
-                            cell++;
-
-                            if (cell % 9 == 0)
-                            {
-                                cell = 0;
-                                row++;
-                                sw.Write('\n');
-                            }
-                        }
-                    }
                 }
+
             }
         }
 
@@ -206,10 +224,19 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                         isPaused = false;
 
                     stopwatch.Restart();
+                    reset = true;
                     generateGame(gameFilePath);
 
                     isSaved = true;
                     hasCheated = false;
+
+                    using (StreamWriter sw = new StreamWriter(gameFilePath, false))
+                    {
+                        for (int i = 0; i < 19; i++)
+                        {
+                            sw.WriteLine(lines[i]);
+                        }
+                    }
                 }
             }
             else
@@ -231,7 +258,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                 //populates list of empty or otherwise incorrect cells
                 foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
                 {
-                    if (string.IsNullOrEmpty(x.Text) || lines[row][cell] != x.Text[0])
+                    if (string.IsNullOrEmpty(x.Text) || (!string.IsNullOrEmpty(x.Text) && lines[row][cell] != x.Text[0]))
                     {
                         incorrectOrEmpty.Add(x);
                     }
@@ -352,10 +379,12 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
             int row = 0;
 
             //assuming the saved data was put in correctly, this little bit of code loads the game from the last saved state
-            if(lines.Count() > 21)
+            if (lines.Count() > 21 && reset == false)
             {
                 row = 20;
             }
+
+            reset = false;
 
             //Had to make sure the loop iterated by tabindex and not whatever weird ordering system it was using by default.
             foreach (var x in cellContainer.Controls.OfType<Control>().OrderBy(x => x.TabIndex))
