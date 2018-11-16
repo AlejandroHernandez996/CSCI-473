@@ -38,9 +38,13 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
         //Set the gameFilePath then generate a game with it and close the dialog
         private void button1_Click(object sender, EventArgs e)
         {
-            form1.gameFilePath = @"..\..\puzzles\" + comboBox1.Text;
-            form1.generateGame(form1.gameFilePath);
-            this.Close();
+            if (!comboBox1.Text.Equals(String.Empty))
+            {
+                form1.gameFilePath = @"..\..\puzzles\" + comboBox1.Text;
+                form1.getBox().Text = "Loaded: " + comboBox1.Text;
+                form1.generateGame(form1.gameFilePath);
+                this.Close();
+            }
         }
     }
 }

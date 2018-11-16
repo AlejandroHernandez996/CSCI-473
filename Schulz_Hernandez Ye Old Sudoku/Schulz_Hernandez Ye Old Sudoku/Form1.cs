@@ -341,7 +341,10 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                 generateGame(gameFilePath);
             }
         }
-
+        public TextBox getBox()
+        {
+            return debugBox;
+        }
         public void generateGame(string filePath)
         {
             lines = System.IO.File.ReadAllLines(gameFilePath);
@@ -383,7 +386,7 @@ namespace Schulz_Hernandez_Ye_Old_Sudoku
                     row++;
                 }
             }
-
+           
             isPaused = false;
             stopwatch.Restart();
             isSaved = true;
