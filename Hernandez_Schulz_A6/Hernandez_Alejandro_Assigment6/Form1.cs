@@ -27,6 +27,7 @@ namespace Hernandez_Alejandro_Assigment6
 
         }
 
+        //Show Pie Graph
         private void button1_Click(object sender, EventArgs e)
         {
             PIe pieForm = new PIe(this);
@@ -46,6 +47,7 @@ namespace Hernandez_Alejandro_Assigment6
             Application.Exit();
         }
 
+        //Show Bar Graph
         private void button2_Click(object sender, EventArgs e)
         {
             Bar barForm = new Bar(this);
@@ -53,6 +55,7 @@ namespace Hernandez_Alejandro_Assigment6
             barForm.Show();
         }
 
+        //Show Line Graph
         private void button3_Click(object sender, EventArgs e)
         {
             Line lineForm = new Line(this);
@@ -60,6 +63,7 @@ namespace Hernandez_Alejandro_Assigment6
             lineForm.Show();
         }
 
+        //Show Radar Graph
         private void button4_Click(object sender, EventArgs e)
         {
             Radar radarForm = new Radar(this);
